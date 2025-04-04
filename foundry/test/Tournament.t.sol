@@ -20,6 +20,7 @@ contract TournamentTest is Test {
         assertEq(tournament.players(1), "player2");
         assertEq(tournament.players(2), "player3");
         assertEq(tournament.players(3), "player4");
+        assertEq(address(tournament).balance, 4 ether);
     }
 
     function test_startTournament() public {
