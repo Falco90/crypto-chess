@@ -7,48 +7,77 @@ import {Tournament} from "../src/Tournament.sol";
 contract TournamentTest is Test {
     Tournament public tournament;
 
+    address organizer;
+    address playerAddress1;
+    address playerAddress2;
+    address playerAddress3;
+    address playerAddress4;
+
     function setUp() public {
-        tournament = new Tournament("myTournament", 1, 4);
+        organizer = address(0x99);
+
+        Receiver receiver1 = new Receiver();
+        playerAddress1 = address(receiver1);
+        Receiver receiver2 = new Receiver();
+        playerAddress2 = address(receiver2);
+        Receiver receiver3 = new Receiver();
+        playerAddress3 = address(receiver3);
+        Receiver receiver4 = new Receiver();
+        playerAddress4 = address(receiver4);
+
+        tournament = new Tournament("myTournament", 1 ether, 4);
+
+        hoax(playerAddress1, 10 ether);
+        tournament.addPlayer{value: 1 ether}("player1");
+
+        hoax(playerAddress2, 10 ether);
+        tournament.addPlayer{value: 1 ether}("player2");
+
+        hoax(playerAddress3, 10 ether);
+        tournament.addPlayer{value: 1 ether}("player3");
+
+        hoax(playerAddress4, 10 ether);
+        tournament.addPlayer{value: 1 ether}("player4");
     }
 
-    function test_addPlayers() public {
-        tournament.addPlayer{ value: 1 ether }("player1");
-        tournament.addPlayer{ value: 1 ether }("player2");
-        tournament.addPlayer{ value: 1 ether }("player3");
-        tournament.addPlayer{ value: 1 ether }("player4");
-        assertEq(tournament.players(0), "player1");
-        assertEq(tournament.players(1), "player2");
-        assertEq(tournament.players(2), "player3");
-        assertEq(tournament.players(3), "player4");
+    function test_addPlayers() public view {
+        assertEq(address(playerAddress1).balance, 9 ether);
+        assertEq(
+            tournament.playerAddressToPlayerName(playerAddress1),
+            "player1"
+        );
+        assertEq(tournament.playerNames(2), "player3");
         assertEq(address(tournament).balance, 4 ether);
     }
 
     function test_startTournament() public {
-        tournament.addPlayer{ value: 1 ether }("player1");
-        tournament.addPlayer{ value: 1 ether }("player2");
-        tournament.addPlayer{ value: 1 ether }("player3");
-        tournament.addPlayer{ value: 1 ether }("player4");
         tournament.startTournament();
         assertEq(tournament.hasStarted(), true);
     }
 
     function test_finishTournament() public {
-        tournament.addPlayer{ value: 1 ether }("player1");
-        tournament.addPlayer{ value: 1 ether }("player2");
-        tournament.addPlayer{ value: 1 ether }("player3");
-        tournament.addPlayer{ value: 1 ether }("player4");
         tournament.startTournament();
         tournament.finishTournament();
         assertEq(tournament.hasFinished(), true);
+        assertEq(tournament.winner(), "player1");
     }
 
-    // function test_givePrize() public {
-    //     tournament.addPlayer{ value: 1 ether }("player1");
-    //     tournament.addPlayer{ value: 1 ether }("player2");
-    //     tournament.addPlayer{ value: 1 ether }("player3");
-    //     tournament.addPlayer{ value: 1 ether }("player4");
-    //     tournament.startTournament();
-    //     tournament.finishTournament();
-    //     tournament.givePrize();
-    // }
+    function test_givePrize() public {
+        tournament.startTournament();
+        tournament.finishTournament();
+
+        uint256 balanceBefore = tournament
+            .playerNameToPlayerAddress("player1")
+            .balance;
+        tournament.givePrize();
+        uint256 balanceAfter = tournament
+            .playerNameToPlayerAddress("player1")
+            .balance;
+
+        assertEq(balanceAfter - balanceBefore, 4 ether);
+    }
+}
+
+contract Receiver {
+    receive() external payable {}
 }
