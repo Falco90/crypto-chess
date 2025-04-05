@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import {Test, console} from "forge-std/Test.sol";
+import {Test, console} from "dependencies/forge-std-1.9.5/src/Test.sol";
 import {Tournament} from "../src/Tournament.sol";
+import {IJsonApi} from "dependencies/flare-periphery-0.0.21/src/coston2/IJsonApi.sol";
 
 contract TournamentTest is Test {
     Tournament public tournament;
@@ -55,21 +56,16 @@ contract TournamentTest is Test {
         assertEq(tournament.hasStarted(), true);
     }
 
-    function test_finishTournament() public {
+    function test_finishTournament(mock_proof) public {
         tournament.startTournament();
         tournament.finishTournament();
         assertEq(tournament.hasFinished(), true);
         assertEq(tournament.winner(), "player1");
-    }
-
-    function test_givePrize() public {
-        tournament.startTournament();
-        tournament.finishTournament();
 
         uint256 balanceBefore = tournament
             .playerNameToPlayerAddress("player1")
             .balance;
-        tournament.givePrize();
+
         uint256 balanceAfter = tournament
             .playerNameToPlayerAddress("player1")
             .balance;
