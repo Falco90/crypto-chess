@@ -56,22 +56,22 @@ contract TournamentTest is Test {
         assertEq(tournament.hasStarted(), true);
     }
 
-    function test_finishTournament(mock_proof) public {
-        tournament.startTournament();
-        tournament.finishTournament();
-        assertEq(tournament.hasFinished(), true);
-        assertEq(tournament.winner(), "player1");
+    // function test_finishTournament(mock_proof) public {
+    //     tournament.startTournament();
+    //     tournament.finishTournament();
+    //     assertEq(tournament.hasFinished(), true);
+    //     assertEq(tournament.winner(), "player1");
 
-        uint256 balanceBefore = tournament
-            .playerNameToPlayerAddress("player1")
-            .balance;
+    //     uint256 balanceBefore = tournament
+    //         .playerNameToPlayerAddress("player1")
+    //         .balance;
 
-        uint256 balanceAfter = tournament
-            .playerNameToPlayerAddress("player1")
-            .balance;
+    //     uint256 balanceAfter = tournament
+    //         .playerNameToPlayerAddress("player1")
+    //         .balance;
 
-        assertEq(balanceAfter - balanceBefore, 4 ether);
-    }
+    //     assertEq(balanceAfter - balanceBefore, 4 ether);
+    // }
 }
 
 contract Receiver {

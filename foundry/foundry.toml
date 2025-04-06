@@ -2,10 +2,13 @@
 src = "src"
 out = "out"
 libs = ["lib", "dependencies"]
+fs_permissions = [{ access = "read-write", path = "./data" }]
 
 [dependencies]
 forge-std = "1.9.5"
 flare-periphery = "0.0.21"
+"@openzeppelin-contracts" = "5.2.0-rc.1"
+surl = { version = "0.0.0", git = "https://github.com/memester-xyz/surl.git", rev = "034c912ae9b5e707a5afd21f145b452ad8e800df" }
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
 
 [soldeer]

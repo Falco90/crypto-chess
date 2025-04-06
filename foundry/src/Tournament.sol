@@ -19,7 +19,6 @@ contract Tournament {
     address[] public playerAddresses;
 
     struct DataTransportObject {
-        string name;
         string url;
         string creator;
         string status;
