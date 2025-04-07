@@ -89,20 +89,21 @@ contract SubmitAttestationRequest is Script {
     function run() external {
         string memory fileName = string.concat(
             attestationTypeName,
-            "_votingRoundId"
+            "_abiEncodedRequest.txt"
         );
         string memory filePath = string.concat(dirPath, fileName);
-        // string memory requestStr = vm.readLine(filePath);
-        // bytes memory request = vm.parseBytes(requestStr);
+        string memory requestStr = vm.readLine(filePath);
+        bytes memory request = vm.parseBytes(requestStr);
 
-        // Base.submitAttestationRequest(request);
+        Base.submitAttestationRequest(request);
 
         uint32 votingRoundId = Base.calculateRoundId();
-        // string memory printString = string.concat(
-        //     requestStr,
-        //     "\n",
-        //     Strings.toString(votingRoundId)
-        // );
+
+        fileName = string.concat(
+            attestationTypeName,
+            "_votingRoundId"
+        );
+
         Base.writeToFile(dirPath, fileName, Strings.toString(votingRoundId), true);
     }
 }
@@ -113,8 +114,6 @@ contract RetrieveDataAndProof is Script {
     function run() external {
         string memory daLayerUrl = vm.envString("COSTON2_DA_LAYER_URL"); // XXX
         string memory apiKey = vm.envString("X_API_KEY");
-        string memory fileName = string.concat(attestationTypeName, ".txt");
-        string memory filePath = string.concat(dirPath, fileName);
 
         // We import the roundId and abiEncodedRequest from the first file
         string memory requestBytes = vm.readLine(
@@ -158,7 +157,8 @@ contract RetrieveDataAndProof is Script {
         );
         console.log("url: %s\n", url);
 
-        (, bytes memory data) = Base.postAttestationRequest(url, headers, body);
+        (uint256 status, bytes memory data) = Base.postAttestationRequest(url, headers, body);
+        console.log("status: ",status);
 
         bytes memory dataJson = Base.parseData(data);
         Base.ParsableProof memory proof = abi.decode(
