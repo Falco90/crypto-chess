@@ -116,5 +116,3 @@ contract Tournament {
         require(sent, "Failed to send prize");
     }
 }
-
-event DebugInfo(address winner, uint256 prizeAmount, uint256 contractBalance);
