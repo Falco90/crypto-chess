@@ -1,5 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+require("dotenv").config();
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY ?? "";
 const FLARE_API_KEY = process.env.FLARE_API_KEY ?? "";
