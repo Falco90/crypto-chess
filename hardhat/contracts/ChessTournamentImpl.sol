@@ -33,6 +33,8 @@ contract ChessTournamentImpl is Initializable, OwnableUpgradeable {
         url = _url;
         maxPlayers = _maxPlayers;
         fee = _fee;
+
+        __Ownable_init(msg.sender);
     }
 
     function addPlayer(string memory _playerName) public payable {

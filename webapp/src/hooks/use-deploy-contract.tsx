@@ -3,14 +3,14 @@ import { parseEther, encodeFunctionData } from 'viem'
 import proxyJson from "../contracts/proxy.json"
 import implJson from "../contracts/implementation.json"
 
-const implAddress = "0x3D22bC6Ed706Dc41C25A7D1c0Ec06b3A2d9A90F2";
+const implAddress = "0x4d889cbf8eb7A972C754C85171A5f8CB55F70aE3";
 const implAbi = implJson.abi;
 const proxyBytecode = proxyJson.bytecode as `0x${string}`;
 
 const initData = encodeFunctionData({
   abi: implAbi,
   functionName: "initialize",
-  args: ["https://api.chess.com/pub/tournament/-33rd-chesscom-quick-knockouts-1401-1600", 4, parseEther("1")]
+  args: ["https://api.chess.com/pub/tournament/-33rd-chesscom-quick-knockouts-1401-1600", 8, parseEther("2")]
 })
 
 function DeployContract() {

@@ -8,13 +8,13 @@ import implJson from "../../artifacts/contracts/ChessTournamentImpl.sol/ChessTou
 const ChessTournamentModule = buildModule("ChessTournamentModule", (m) => {
   const chessTournamentImpl = m.contract("ChessTournamentImpl", []);
 
-  const initData = encodeFunctionData({
-    abi: implJson.abi,
-    functionName: "initialize",
-    args: ["https://api.chess.com/pub/tournament/-33rd-chesscom-quick-knockouts-1401-1600", 4, parseEther("1")]
-  })
+  // const initData = encodeFunctionData({
+  //   abi: implJson.abi,
+  //   functionName: "initialize",
+  //   args: ["https://api.chess.com/pub/tournament/-33rd-chesscom-quick-knockouts-1401-1600", 4, parseEther("1")]
+  // })
 
-  const chessTournamentProxy = m.contract("ChessTournamentProxy", [chessTournamentImpl, initData]);
+  // const chessTournamentProxy = m.contract("ChessTournamentProxy", [chessTournamentImpl, initData]);
 
   return { chessTournamentImpl };
 });
