@@ -3,7 +3,7 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 import { parseEther, encodeFunctionData } from "viem";
-import implJson from "../../artifacts/contracts/ChessTournamentImpl.sol/ChessTournamentImpl.json"
+import implJson from "../../artifacts/contracts/ChessTournamentImpl.sol/ChessTournamentImpl.json";
 
 const ChessTournamentModule = buildModule("ChessTournamentModule", (m) => {
   const chessTournamentImpl = m.contract("ChessTournamentImpl", []);
@@ -16,7 +16,7 @@ const ChessTournamentModule = buildModule("ChessTournamentModule", (m) => {
 
   const chessTournamentProxy = m.contract("ChessTournamentProxy", [chessTournamentImpl, initData]);
 
-  return { chessTournamentImpl, chessTournamentProxy };
+  return { chessTournamentImpl };
 });
 
 export default ChessTournamentModule;
