@@ -1,6 +1,7 @@
 import Head from "next/head";
 import styles from "../../styles/Home.module.css";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import Header from "../../components/Header";
 import { useState } from "react";
 import DeployContract from "../../hooks/use-deploy-contract";
 
@@ -9,17 +10,22 @@ const New = () => {
         name: "",
         url: "",
         organizer: "",
-        status: ""
+        status: "",
+        fee: "",
+        maxPlayers: 0
     });
-    async function fetchTournament() {
-        const data = await fetch("https://api.chess.com/pub/tournament/-33rd-chesscom-quick-knockouts-1401-1600", {
-            method: 'GET', // or 'POST'
-            mode: 'cors', // This tells the browser it's a CORS request
+
+    async function fetchTournament(event: any) {
+        event.preventDefault();
+
+        await fetch(tournamentData.url, {
+            method: 'GET',
+            mode: 'cors',
         }).then(async (response) => {
             const data = await response.json();
             setTournamentData({
+                ...tournamentData,
                 name: data.name,
-                url: data.url,
                 organizer: data.organizer,
                 status: data.status
             })
@@ -27,11 +33,9 @@ const New = () => {
 
     }
 
-    async function deployContract() {
-
-    }
     return (
         <div className={styles.container} >
+            <Header />
             <Head>
                 <title>Crypto Chess</title>
                 <meta
@@ -42,15 +46,20 @@ const New = () => {
             </Head>
 
             <main className={styles.main}>
-                <ConnectButton />
 
                 <h1 className={styles.title}>
                     Deploy New Tournament
                 </h1>
-                <form action={fetchTournament}>
-                    <input type="text" />
+                <form>
+                    <input value={tournamentData.url} onChange={(e) => {
+                        setTournamentData({ ...tournamentData, url: e.target.value })
+                    }} type="text" />
                     <label htmlFor="">Chess.com tournament URL</label>
-                    <button type="submit">Link</button>
+                    <button onClick={(e) => fetchTournament(e)} type="submit">Link</button>
+                    <input value={tournamentData.maxPlayers} type="text" onChange={(e) => { setTournamentData({ ...tournamentData, maxPlayers: parseInt(e.target.value) }) }} />
+                    <label htmlFor="">Amount of players</label>
+                    <input value={tournamentData.fee} type="text" onChange={(e) => { setTournamentData({ ...tournamentData, fee: e.target.value }) }} />
+                    <label htmlFor="">Joining Fee</label>
                 </form>
                 < div >
                     <div>name: {tournamentData ? tournamentData.name : ""}</div>
@@ -58,7 +67,7 @@ const New = () => {
                     <div>organizer: {tournamentData ? tournamentData.organizer : ""}</div>
                     <div>status: {tournamentData ? tournamentData.status : ""}</div>
                 </div>
-                <DeployContract />
+                <DeployContract url={tournamentData.url} maxPlayers={tournamentData.maxPlayers} fee={tournamentData.fee} />
             </main >
 
             <footer className={styles.footer}>

@@ -2,7 +2,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import Header from '../components/Header';
 
 const Home: NextPage = () => {
   return (
@@ -15,18 +15,9 @@ const Home: NextPage = () => {
         />
         <link href="/favicon.ico" rel="icon" />
       </Head>
+      <Header />
 
       <main className={styles.main}>
-        <ConnectButton />
-
-        <h1 className={styles.title}>
-          Crypto Chess
-
-        </h1>
-
-        <p className={styles.description}>
-          Chess.com tournaments with Crypto prizes
-        </p>
         <a href="tournaments/new"><button>New Tournament Contract</button></a>
       </main>
 

@@ -7,14 +7,19 @@ const implAddress = "0x4d889cbf8eb7A972C754C85171A5f8CB55F70aE3";
 const implAbi = implJson.abi;
 const proxyBytecode = proxyJson.bytecode as `0x${string}`;
 
-const initData = encodeFunctionData({
-  abi: implAbi,
-  functionName: "initialize",
-  args: ["https://api.chess.com/pub/tournament/-33rd-chesscom-quick-knockouts-1401-1600", 8, parseEther("2")]
-})
-
-function DeployContract() {
+type pageProps = {
+  url: string,
+  maxPlayers: number,
+  fee: string
+}
+function DeployContract({url, maxPlayers, fee}: pageProps) {
   const { deployContract } = useDeployContract()
+
+  const initData = encodeFunctionData({
+    abi: implAbi,
+    functionName: "initialize",
+    args: [url, maxPlayers, parseEther(fee)]
+  })
 
   return (
     <button
