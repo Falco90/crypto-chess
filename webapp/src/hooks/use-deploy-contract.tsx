@@ -2,6 +2,7 @@ import { useDeployContract } from 'wagmi'
 import { parseEther, encodeFunctionData } from 'viem'
 import proxyJson from "../contracts/proxy.json"
 import implJson from "../contracts/implementation.json"
+import { Button } from '@mui/material'
 
 const implAddress = "0x4d889cbf8eb7A972C754C85171A5f8CB55F70aE3";
 const implAbi = implJson.abi;
@@ -22,7 +23,7 @@ function DeployContract({url, maxPlayers, fee}: pageProps) {
   })
 
   return (
-    <button
+    <Button
       onClick={() =>
         deployContract({
           abi: proxyJson.abi,
@@ -32,7 +33,7 @@ function DeployContract({url, maxPlayers, fee}: pageProps) {
       }
     >
       Deploy New Contract
-    </button>
+    </Button>
   )
 }
 

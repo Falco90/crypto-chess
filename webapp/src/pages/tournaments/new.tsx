@@ -4,6 +4,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Header from "../../components/Header";
 import { useState } from "react";
 import DeployContract from "../../hooks/use-deploy-contract";
+import { Box, TextField, Button, List, Collapse, ListItemButton, ListItemIcon, ListItemText, ListSubheader, ListItem } from "@mui/material";
 
 const New = () => {
     const [tournamentData, setTournamentData] = useState({
@@ -14,6 +15,7 @@ const New = () => {
         fee: "",
         maxPlayers: 0
     });
+    const [fetchedTournament, setFetchedTournament] = useState(false);
 
     async function fetchTournament(event: any) {
         event.preventDefault();
@@ -29,6 +31,8 @@ const New = () => {
                 organizer: data.organizer,
                 status: data.status
             })
+
+            setFetchedTournament(true);
         });
 
     }
@@ -45,30 +49,57 @@ const New = () => {
                 <link href="/favicon.ico" rel="icon" />
             </Head>
 
-            <main className={styles.main}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
-                <h1 className={styles.title}>
+                <h1>
                     Deploy New Tournament
                 </h1>
-                <form>
-                    <input value={tournamentData.url} onChange={(e) => {
+                <Box>
+                    <TextField id="outlined-basic" label="Chess.com URL" variant="outlined" value={tournamentData.url} onChange={(e) => {
                         setTournamentData({ ...tournamentData, url: e.target.value })
-                    }} type="text" />
-                    <label htmlFor="">Chess.com tournament URL</label>
-                    <button onClick={(e) => fetchTournament(e)} type="submit">Link</button>
-                    <input value={tournamentData.maxPlayers} type="text" onChange={(e) => { setTournamentData({ ...tournamentData, maxPlayers: parseInt(e.target.value) }) }} />
-                    <label htmlFor="">Amount of players</label>
-                    <input value={tournamentData.fee} type="text" onChange={(e) => { setTournamentData({ ...tournamentData, fee: e.target.value }) }} />
-                    <label htmlFor="">Joining Fee</label>
-                </form>
-                < div >
-                    <div>name: {tournamentData ? tournamentData.name : ""}</div>
-                    <div>url: {tournamentData ? tournamentData.url : ""}</div>
-                    <div>organizer: {tournamentData ? tournamentData.organizer : ""}</div>
-                    <div>status: {tournamentData ? tournamentData.status : ""}</div>
-                </div>
-                <DeployContract url={tournamentData.url} maxPlayers={tournamentData.maxPlayers} fee={tournamentData.fee} />
-            </main >
+                    }} />
+                    <Button onClick={(e) => fetchTournament(e)} type="submit">Link</Button>
+                </Box>
+                {fetchedTournament ?
+                    <Box>
+                        <Box>
+                            <Box>
+                                <TextField id="outlined-basic" label="Players" variant="outlined" type="number" value={tournamentData.maxPlayers} onChange={(e) => {
+                                    setTournamentData({ ...tournamentData, maxPlayers: parseInt(e.target.value) })
+                                }} />
+                            </Box>
+                            <Box>
+                                <TextField id="outlined-basic" label="Fee (ether)" variant="outlined" type="number" value={tournamentData.fee} onChange={(e) => {
+                                    setTournamentData({ ...tournamentData, fee: e.target.value })
+                                }} />
+                            </Box>
+                        </Box>
+                        <List
+                            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                            component="nav"
+                            aria-labelledby="nested-list-subheader"
+                            subheader={
+                                <ListSubheader component="div" id="nested-list-subheader">
+                                    Tournament Details
+                                </ListSubheader>
+                            }
+                        >
+                            <ListItem>
+                                <ListItemText primary={`URL: ${tournamentData.url}`} />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary={`Status: ${tournamentData.status}`} />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary={`Max Amount of Players: ${tournamentData.maxPlayers}`} />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary="Current Amount of Players:" />
+                            </ListItem>
+                        </List>
+                        <DeployContract url={tournamentData.url} maxPlayers={tournamentData.maxPlayers} fee={tournamentData.fee} />
+                    </Box> : ""}
+            </Box>
 
             <footer className={styles.footer}>
                 <a href="https://rainbow.me" rel="noopener noreferrer" target="_blank">

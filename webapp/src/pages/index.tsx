@@ -3,10 +3,11 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Header from '../components/Header';
+import { Button, Typography, Container } from '@mui/material';
 
 const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
+    <Container>
       <Head>
         <title>Crypto Chess</title>
         <meta
@@ -18,7 +19,7 @@ const Home: NextPage = () => {
       <Header />
 
       <main className={styles.main}>
-        <a href="tournaments/new"><button>New Tournament Contract</button></a>
+        <Button>New Tournament Contract</Button>
       </main>
 
       <footer className={styles.footer}>
@@ -26,7 +27,7 @@ const Home: NextPage = () => {
           Made by Falco90 during Flare x Encode April 2025
         </a>
       </footer>
-    </div>
+    </Container>
   );
 };
 
