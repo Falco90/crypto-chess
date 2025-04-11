@@ -11,36 +11,51 @@ contract ChessTournamentImpl is Initializable, OwnableUpgradeable {
     string public url;
     uint256 public fee;
     uint256 public prize;
-    uint8 public maxPlayers;
-    bool public hasStarted;
-    bool public hasFinished;
     string public winner;
     mapping(string => address) public playerNameToPlayerAddress;
     mapping(address => string) public playerAddressToPlayerName;
     string[] public playerNames;
 
-    struct DataTransportObject {
+    struct AddPlayerDTO {
+        string url;
+        string[] players;
+    }
+
+    struct FinishTournamentDTO {
         string url;
         string status;
         string winner;
     }
 
-    function initialize(
-        string memory _url,
-        uint8 _maxPlayers,
-        uint256 _fee
-    ) public initializer {
+    function initialize(string memory _url, uint256 _fee) public initializer {
         url = _url;
-        maxPlayers = _maxPlayers;
         fee = _fee;
 
         __Ownable_init(msg.sender);
     }
 
-    function addPlayer(string memory _playerName) public payable {
-        require(!hasStarted, "Tournament has already started");
-        require(msg.value == fee, "need to pay the joining fee");
-        require(playerNames.length < maxPlayers, "tournament is full");
+    function addPlayer(
+        IJsonApi.Proof calldata data,
+        string memory _playerName
+    ) public payable {
+        require(isJsonApiProofValid(data), "Proof invalid");
+
+        AddPlayerDTO memory dto = abi.decode(
+            data.data.responseBody.abi_encoded_data,
+            (AddPlayerDTO)
+        );
+
+        require(
+            keccak256(bytes(url)) == keccak256(bytes(dto.url)),
+            "Tournament URL must match"
+        );
+
+        require(
+            includes(dto.players, _playerName),
+            "Username not in tournament players list"
+        );
+
+        require(msg.value == fee, "You need to pay the joining fee");
 
         playerNameToPlayerAddress[_playerName] = msg.sender;
         playerAddressToPlayerName[msg.sender] = _playerName;
@@ -49,31 +64,24 @@ contract ChessTournamentImpl is Initializable, OwnableUpgradeable {
         prize += msg.value;
     }
 
-    function startTournament() public onlyOwner {
-        require(playerNames.length == maxPlayers, "tournament is not full yet");
-
-        hasStarted = true;
-    }
-
     function finishTournament(IJsonApi.Proof calldata data) public {
-        require(isJsonApiProofValid(data), "proof invalid");
+        require(isJsonApiProofValid(data), "Proof invalid");
 
-        DataTransportObject memory dto = abi.decode(
+        FinishTournamentDTO memory dto = abi.decode(
             data.data.responseBody.abi_encoded_data,
-            (DataTransportObject)
+            (FinishTournamentDTO)
         );
 
         require(
             keccak256(bytes(url)) == keccak256(bytes(dto.url)),
-            "tournament url must match"
+            "Tournament URL must match"
         );
         require(
             keccak256(bytes(dto.status)) == keccak256(bytes("finished")),
-            "tournament must have finished"
+            "Tournament must have finished"
         );
 
         winner = dto.winner;
-        hasFinished = true;
         givePrize();
     }
 
@@ -103,7 +111,24 @@ contract ChessTournamentImpl is Initializable, OwnableUpgradeable {
         require(sent, "Failed to send prize");
     }
 
+    function includes(
+        string[] memory arr,
+        string memory target
+    ) internal pure returns (bool) {
+        bytes32 targetHash = keccak256(bytes(target));
+
+        for (uint i = 0; i < arr.length; i++) {
+            if (keccak256(bytes(arr[i])) == targetHash) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     receive() external payable {}
 
-    function abiSignatureHack(DataTransportObject calldata dto) private pure {}
+    function abiSignatureHack(
+        AddPlayerDTO calldata addPlayerDTO,
+        FinishTournamentDTO calldata finishTournamentDTO
+    ) private pure {}
 }
