@@ -10,16 +10,15 @@ const proxyBytecode = proxyJson.bytecode as `0x${string}`;
 
 type pageProps = {
   url: string,
-  maxPlayers: number,
   fee: string
 }
-function DeployContract({url, maxPlayers, fee}: pageProps) {
+function DeployContract({url,fee}: pageProps) {
   const { deployContract } = useDeployContract()
 
   const initData = encodeFunctionData({
     abi: implAbi,
     functionName: "initialize",
-    args: [url, maxPlayers, parseEther(fee)]
+    args: [url, parseEther(fee)]
   })
 
   return (
