@@ -27,11 +27,15 @@ contract ChessTournamentImpl is Initializable, OwnableUpgradeable {
         string winner;
     }
 
-    function initialize(string memory _url, uint256 _fee) public initializer {
+    function initialize(
+        address _organizer,
+        string memory _url,
+        uint256 _fee
+    ) public initializer {
         url = _url;
         fee = _fee;
 
-        __Ownable_init(msg.sender);
+        __Ownable_init(_organizer);
     }
 
     function addPlayer(
@@ -124,8 +128,6 @@ contract ChessTournamentImpl is Initializable, OwnableUpgradeable {
         }
         return false;
     }
-
-    receive() external payable {}
 
     function abiSignatureHack(
         AddPlayerDTO calldata addPlayerDTO,
