@@ -4,8 +4,10 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Header from '../components/Header';
 import { Button, Typography, Container } from '@mui/material';
+import { useRouter } from 'next/router';
 
 const Home: NextPage = () => {
+  const router = useRouter();
   return (
     <Container>
       <Head>
@@ -19,7 +21,9 @@ const Home: NextPage = () => {
       <Header />
 
       <main className={styles.main}>
-        <Button>New Tournament Contract</Button>
+        <Button onClick={() => {
+          router.push("/tournaments/new");
+        }}>New Tournament Contract</Button>
       </main>
 
       <footer className={styles.footer}>

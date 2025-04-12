@@ -1,7 +1,7 @@
 import styles from "../../styles/Home.module.css";
 import Header from "../../components/Header";
 import { useState } from "react";
-import DeployContract from "../../hooks/use-deploy-contract";
+import CreateTournament from "../../hooks/create-tournament";
 import { Box, TextField, Button, List, Collapse, ListItemButton, ListItemIcon, ListItemText, ListSubheader, ListItem } from "@mui/material";
 
 const New = () => {
@@ -10,6 +10,7 @@ const New = () => {
         url: "",
         organizer: "",
         status: "",
+        players: []
     });
     const [fee, setFee] = useState("0");
     const [fetchedTournament, setFetchedTournament] = useState(false);
@@ -26,7 +27,8 @@ const New = () => {
                 ...tournamentData,
                 name: data.name,
                 organizer: data.organizer,
-                status: data.status
+                status: data.status,
+                players: data.players.map((player: { name: any; }) => player.name)
             })
 
             setFetchedTournament(true);
@@ -71,7 +73,7 @@ const New = () => {
                                 <ListItemText primary="Current Amount of Players:" />
                             </ListItem>
                         </List>
-                        <DeployContract url={tournamentData.url} fee={fee} />
+                        <CreateTournament url={tournamentData.url} fee={fee} />
                     </Box> : ""}
             </Box>
 
