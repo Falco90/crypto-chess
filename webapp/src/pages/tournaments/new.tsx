@@ -3,6 +3,7 @@ import Header from "../../components/Header";
 import { useState } from "react";
 import CreateTournament from "../../hooks/create-tournament";
 import { Box, TextField, Button, List, Collapse, ListItemButton, ListItemIcon, ListItemText, ListSubheader, ListItem } from "@mui/material";
+import { toChessApiUrl } from "../../utils/utils";
 
 const New = () => {
     const [tournamentData, setTournamentData] = useState({
@@ -17,8 +18,9 @@ const New = () => {
 
     async function fetchTournament(event: any) {
         event.preventDefault();
+        const chessApiUrl = toChessApiUrl(tournamentData.url);
 
-        await fetch(tournamentData.url, {
+        await fetch(chessApiUrl!, {
             method: 'GET',
             mode: 'cors',
         }).then(async (response) => {

@@ -5,9 +5,11 @@ import styles from '../styles/Home.module.css';
 import Header from '../components/Header';
 import { Button, Typography, Container } from '@mui/material';
 import { useRouter } from 'next/router';
+import GetTournaments from "../hooks/get-tournaments";
 
 const Home: NextPage = () => {
   const router = useRouter();
+
   return (
     <Container>
       <Head>
@@ -19,6 +21,8 @@ const Home: NextPage = () => {
         <link href="/favicon.ico" rel="icon" />
       </Head>
       <Header />
+      <h2>Tournament Contracts:</h2>
+      <GetTournaments />
 
       <main className={styles.main}>
         <Button onClick={() => {

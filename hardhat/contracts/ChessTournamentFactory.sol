@@ -6,9 +6,19 @@ import "./ChessTournamentImpl.sol";
 
 contract ChessTournamentFactory {
     address public implementation;
-    address[] public allChessTournaments;
+    Tournament[] public allChessTournaments;
 
-    event ChessTournamentCloned(address indexed organizer, string indexed url, address clone);
+    struct Tournament {
+        address contractAddress;
+        string url;
+        uint256 fee;
+    }
+
+    event ChessTournamentCloned(
+        address indexed organizer,
+        string indexed url,
+        address clone
+    );
 
     constructor(address _implementation) {
         implementation = _implementation;
@@ -20,12 +30,14 @@ contract ChessTournamentFactory {
     ) external returns (address clone) {
         clone = Clones.clone(implementation);
         ChessTournamentImpl(clone).initialize(msg.sender, _url, _fee);
-        allChessTournaments.push(clone);
+        allChessTournaments.push(
+            Tournament({contractAddress: clone, url: _url, fee: _fee})
+        );
 
         emit ChessTournamentCloned(msg.sender, _url, clone);
     }
 
-    function getAllChessTournaments() external view returns (address[] memory) {
+    function getAllChessTournaments() external view returns (Tournament[] memory) {
         return allChessTournaments;
     }
 }
