@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Header from '../components/Header';
-import { Button, Typography, Container } from '@mui/material';
+import { Button, Typography, Container, Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import GetTournaments from "../hooks/get-tournaments";
 
@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   const router = useRouter();
 
   return (
-    <Container>
+    <Container sx={{ minHeight: '100vh' }}>
       <Head>
         <title>Crypto Chess</title>
         <meta
@@ -21,15 +21,23 @@ const Home: NextPage = () => {
         <link href="/favicon.ico" rel="icon" />
       </Head>
       <Header />
-      <h2>Tournament Contracts:</h2>
-      <GetTournaments />
-
-      <main className={styles.main}>
-        <Button onClick={() => {
-          router.push("/tournaments/new");
-        }}>New Tournament Contract</Button>
-      </main>
-
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px', padding: '2rem', height: '600px' }}>
+        <Box sx={{ backgroundColor: 'grey.200', padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+          <Typography variant="h5" component="h5" sx={{textAlign: 'center', paddingBottom: '20px' }}>
+            Welcome to CryptoChess!
+          </Typography>
+          <Typography variant="body1" component="p">
+            CryptoChess allows you to attach crypto prizes to chess tournaments on chess.com. Here's how it works: <br /><br />Step 1: Create a chess tournament on chess.com and invite your players. <br /><br />Step 2: Create a new chess tournament by clicking the button below. <br /><br />Step 3: Have your players join the tournament on CryptoChess by sharing the link. <br /><br />Step 4: Play the tournament on chess.com! <br /><br />Step 5: After the tournament is finished, click 'finish tournament' on your CryptoChess tournament page, and the prize will be transferred to the winner!
+          </Typography>
+          <Button sx={{ marginTop: 'auto'}} onClick={() => {
+            router.push("/tournaments/new");
+          }}>New Tournament Contract</Button>
+        </Box>
+        <Box sx={{ backgroundColor: 'grey.200', padding: '1rem'}}>
+          <Typography variant='h5' component='h5' sx={{ textAlign: 'center', paddingBottom: '20px' }}>Tournaments</Typography>
+          <GetTournaments />
+        </Box>
+      </Box>
       <footer className={styles.footer}>
         <a href="https://rainbow.me" rel="noopener noreferrer" target="_blank">
           Made by Falco90 during Flare x Encode April 2025
