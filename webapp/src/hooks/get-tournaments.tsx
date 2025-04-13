@@ -1,7 +1,7 @@
 import { useReadContract } from "wagmi";
 import factoryJson from '../contracts/ChessTournamentFactory.json'
 import { Address } from "viem";
-import { List, ListItem } from "@mui/material";
+import { Button, List, ListItem } from "@mui/material";
 import { truncateAddress, extractTournamentSlug } from "../utils/utils";
 
 type Tournament = {
@@ -26,11 +26,12 @@ function GetTournaments() {
 
     return (
         <List sx={{ backgroundColor: 'lightgray', width: '500px' }}>
-            <ListItem sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}><p>Address</p> <p>Tournament</p> <p>Fee (ether)</p></ListItem>
+            <ListItem sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}><p>Address</p> <p>Tournament</p> <p>Fee (ether)</p> <p></p></ListItem>
             {data?.map((element) => (
-                <ListItem sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}><p>{truncateAddress(element.contractAddress)}</p> <p><a href={element.url}>{extractTournamentSlug(element.url)}</a></p><p>{element.fee} ether</p></ListItem>
+                <ListItem sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}><p>{truncateAddress(element.contractAddress)}</p> <p><a href={element.url}>{extractTournamentSlug(element.url)}</a></p><p>{element.fee} ether</p><Button>Join</Button></ListItem>
             ))}
         </List>
+        
     )
 }
 
