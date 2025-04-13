@@ -3,6 +3,7 @@ import factoryJson from '../contracts/ChessTournamentFactory.json'
 import { Address } from "viem";
 import { Button, List, ListItem } from "@mui/material";
 import { truncateAddress, extractTournamentSlug } from "../utils/utils";
+import StickyHeadTable from "../components/Table";
 
 type Tournament = {
     contractAddress: Address,
@@ -15,7 +16,7 @@ function GetTournaments() {
         address: process.env.NEXT_PUBLIC_FACTORY_ADDRESS as Address,
         functionName: 'getAllChessTournaments',
     }) as {
-        data: Tournament[] | undefined
+        data: Tournament[]
         isLoading: boolean
         isError: boolean
         error: Error | null
@@ -25,13 +26,8 @@ function GetTournaments() {
     if (isError) return <div>Error: {error?.message}</div>
 
     return (
-        <List sx={{ backgroundColor: 'lightgray', width: '500px' }}>
-            <ListItem sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}><p>Address</p> <p>Tournament</p> <p>Fee (ether)</p> <p></p></ListItem>
-            {data?.map((element) => (
-                <ListItem sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}><p>{truncateAddress(element.contractAddress)}</p> <p><a href={element.url}>{extractTournamentSlug(element.url)}</a></p><p>{element.fee} ether</p><Button>Join</Button></ListItem>
-            ))}
-        </List>
-        
+        <StickyHeadTable rows={data} />
+
     )
 }
 

@@ -1,12 +1,13 @@
+import { Box, Typography } from "@mui/material";
 import styles from "../styles/Home.module.css";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Header = () => {
     return (
-        <div className={styles.header}>
-            <h1>CryptoChess</h1>
+        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '2rem' }}>
+            <Typography component="h4" variant="h4" sx={{ fontStyle: 'bold' }}><strong>CryptoChess</strong></Typography>
             <ConnectButton />
-        </div>
+        </Box>
     )
 }
 
