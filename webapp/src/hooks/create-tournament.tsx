@@ -13,7 +13,7 @@ function CreateTournament({ url, fee }: pageProps) {
   const { writeContract } = useWriteContract()
 
   return (
-    <Button
+    <Button variant='outlined'
       onClick={() =>
         writeContract({
           abi: factoryJson.abi,
