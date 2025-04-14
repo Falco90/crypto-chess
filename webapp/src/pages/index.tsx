@@ -8,9 +8,11 @@ import { useRouter } from 'next/router';
 import GetTournaments from "../hooks/get-tournaments";
 import TransitionModal from '../components/Modal';
 import { useState } from 'react';
+import { Mode } from "../components/Modal";
 
 const Home: NextPage = () => {
   const [open, setOpen] = useState(false)
+  const [mode, setMode] = useState(Mode.Create)
   const router = useRouter();
 
   return (
@@ -24,7 +26,7 @@ const Home: NextPage = () => {
         <link href="/favicon.ico" rel="icon" />
       </Head>
       <Header />
-      <TransitionModal open={open} onClose={() => setOpen(false)} />
+      <TransitionModal open={open} onClose={() => setOpen(false)} mode={Mode.Create} />
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px', padding: '2rem', height: '600px' }}>
         <Box sx={{ backgroundColor: 'white', padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: '10px' }}>
           <Typography variant="h5" component="h5" sx={{ textAlign: 'center', paddingBottom: '20px' }}>
@@ -35,11 +37,12 @@ const Home: NextPage = () => {
           </Typography>
           <Button variant="outlined" sx={{ marginTop: 'auto' }} onClick={() => {
             setOpen(true);
+            setMode(Mode.Create);
           }}>New Tournament Contract</Button>
         </Box>
         <Box sx={{ backgroundColor: 'white', padding: '1rem', borderRadius: '10px' }}>
           <Typography variant='h5' component='h5' sx={{ textAlign: 'center', paddingBottom: '20px', }}><strong>Tournaments</strong></Typography>
-          <GetTournaments />
+          <GetTournaments onOpen={() => setOpen(true)} setMode={() => setMode(Mode.View)} />
         </Box>
       </Box>
       <footer className={styles.footer}>

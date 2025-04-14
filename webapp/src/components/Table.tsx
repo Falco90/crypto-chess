@@ -37,10 +37,12 @@ type Tournament = {
 }
 
 type pageProps = {
-    rows: Tournament[]
+    rows: Tournament[],
+    onOpen: () => void,
+    setMode: () => void
 }
 
-export default function StickyHeadTable({ rows }: pageProps) {
+export default function StickyHeadTable({ rows, onOpen, setMode }: pageProps) {
     return (
         <TableContainer sx={{ height: '400px', width: '500px', backgroundColor: 'white' }}>
             <Table stickyHeader aria-label="sticky table" sx={{
@@ -78,6 +80,10 @@ export default function StickyHeadTable({ rows }: pageProps) {
                                             size="small"
                                             variant="outlined"
                                             color="secondary"
+                                            onClick={() => {
+                                                onOpen();
+                                                setMode();
+                                            }}
                                         >
                                             View
                                         </Button>

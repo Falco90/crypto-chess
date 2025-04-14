@@ -10,7 +10,12 @@ type Tournament = {
     url: string,
     fee: bigint
 }
-function GetTournaments() {
+
+type pageProps = {
+    onOpen: () => void,
+    setMode: () => void
+}
+function GetTournaments({onOpen, setMode}: pageProps) {
     const { data, isLoading, isError, error } = useReadContract({
         abi: factoryJson.abi,
         address: process.env.NEXT_PUBLIC_FACTORY_ADDRESS as Address,
@@ -26,7 +31,7 @@ function GetTournaments() {
     if (isError) return <div>Error: {error?.message}</div>
 
     return (
-        <StickyHeadTable rows={data} />
+        <StickyHeadTable rows={data} onOpen={onOpen} setMode={setMode}/>
 
     )
 }

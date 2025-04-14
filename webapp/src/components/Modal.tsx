@@ -24,11 +24,16 @@ const style = {
     p: 4,
 };
 
+export enum Mode {
+    Create,
+    View
+}
 type pageProps = {
     open: boolean,
-    onClose: () => void
+    onClose: () => void,
+    mode: Mode
 }
-export default function TransitionsModal({ open, onClose }: pageProps) {
+export default function TransitionsModal({ open, onClose, mode}: pageProps) {
     const [tournamentData, setTournamentData] = useState({
         name: "",
         url: "",
