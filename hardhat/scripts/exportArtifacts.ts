@@ -16,13 +16,13 @@ const contractsToExport: ContractPath[] = [
     { source: '@flarenetwork/flare-periphery-contracts/coston2/IFlareSystemsManager.sol/IFlareSystemsManager.json'},
     { source: '@flarenetwork/flare-periphery-contracts/coston2/IRelay.sol/IRelay.json'},
     { source: '@flarenetwork/flare-periphery-contracts/coston2/IFdcRequestFeeConfigurations.sol/IFdcRequestFeeConfigurations.json'},
-    { source: 'contracts/Helpers.sol/Helpers.json'},
+    { source: 'contracts/utils/Helpers.sol/Helpers.json'},
     { source: 'contracts/ChessTournamentImpl.sol/ChessTournamentImpl.json'},
 
 ];
 
 const sourceBase = path.join(__dirname, '../artifacts');
-const targetBase = path.join(__dirname, '../../webapp/artifacts');
+const targetBase = path.join(__dirname, '../../server/artifacts');
 
 if (!fs.existsSync(targetBase)) {
     fs.mkdirSync(targetBase, { recursive: true });
