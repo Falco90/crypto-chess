@@ -36,8 +36,15 @@ app.post('/api/add-player', async (req, res) => {
 
     //prepare attestation
     const data = await prepareAttestationRequest(apiUrl, postprocessJq, abiSignature);
-    console.log(data);
-    res.json({ proof: '' });
+
+    const abiEncodedRequest = data.abiEncodedRequest;
+    //submit attestation
+    const roundId = await submitAttestationRequest(abiEncodedRequest);
+    console.log("roundID: ", roundId);
+
+    //retrieve proof and data
+    const dataAndProof = await retrieveDataAndProof(abiEncodedRequest, roundId);
+    res.json({ dataAndProof: dataAndProof });
 }
 );
 
@@ -72,3 +79,12 @@ async function prepareAttestationRequest(
         requestBody
     );
 }
+
+async function retrieveDataAndProof(
+    abiEncodedRequest: string,
+    roundId: number
+  ) {
+    const url = `${COSTON2_DA_LAYER_URL}api/v1/fdc/proof-by-request-round-raw`;
+    console.log("Url:", url, "\n");
+    return await retrieveDataAndProofBase(url, abiEncodedRequest, roundId);
+  }

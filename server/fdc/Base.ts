@@ -83,6 +83,8 @@ async function prepareAttestationRequestBase(
     body: JSON.stringify(request),
   });
 
+  console.log("base response: ", response);
+
   if (response.status !== 200) {
     throw new Error(`Response status is not OK, status ${response.status} ${response.statusText}`);
   }
@@ -146,7 +148,7 @@ async function retrieveDataAndProofBase(
 ) {
   const relay = await getRelay();
   while (!(await relay.isFinalized(200, roundId))) {
-    await sleep(90000);
+    await sleep(35000);
   }
 
   const request = {
