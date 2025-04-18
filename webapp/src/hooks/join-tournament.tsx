@@ -5,7 +5,8 @@ import {
 import { abi as ChessTournamentABI } from '../contracts/ChessTournamentImpl.json';
 import JsonApiVerificationJson from '../contracts/utils/IJsonApiVerification.json';
 import { Address, decodeAbiParameters, parseEther } from 'viem';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, CircularProgress } from '@mui/material';
+import { useState } from 'react';
 
 type AddPlayerParams = {
     contractAddress: `0x${string}`;
@@ -47,8 +48,8 @@ export function useAddPlayer() {
             proof.response_hex as `0x${string}`
         );
 
-        const decodedResponse = decoded[0]; 
-          
+        const decodedResponse = decoded[0];
+
         writeContract({
             address: contractAddress,
             abi: ChessTournamentABI,
@@ -66,6 +67,7 @@ export function useAddPlayer() {
 
     return {
         addPlayer,
+        hash,
         isPending,
         isConfirming,
         isConfirmed,
@@ -74,7 +76,6 @@ export function useAddPlayer() {
 }
 
 async function getDataAndProof(url: string) {
-    console.log(url);
     const response = await fetch("http://localhost:3000/api/add-player", {
         method: 'POST',
         headers: {
@@ -90,6 +91,7 @@ async function getDataAndProof(url: string) {
 }
 
 function JoinTournamentButton({ playerName, contractAddress, url }: { playerName: string, contractAddress: Address, url: string }) {
+    const [isGettingProof, setIsGettingProof] = useState(false);
 
     const {
         addPlayer,
@@ -97,17 +99,34 @@ function JoinTournamentButton({ playerName, contractAddress, url }: { playerName
         isConfirming,
         isConfirmed,
         error,
+        hash
     } = useAddPlayer();
 
     return (
         <Box>
-            <Button onClick={() => getDataAndProof(url).then((proof) => {
-                console.log(proof);
-                addPlayer({ contractAddress, playerName, proof });
-            })}>{isPending? "Pending" : isConfirming? "Confirming" : "Join Tournament"}</Button>
-
-            {isConfirmed && <Typography>✅ Player added!</Typography>}
-            {error && <p>❌ {error.message}</p>}
+            {isGettingProof || isPending || isConfirming ?
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <CircularProgress size={40} color='secondary' />
+                    <Typography>{isGettingProof ? "Getting Proof" : isPending ? "Pending transaction in your wallet" : isConfirming ? "Confirming Transaction" : ""}</Typography>
+                </Box>
+                : ""}
+            {!isConfirmed ?
+                <Button variant="outlined" disabled={isPending || isConfirming || isGettingProof} onClick={() => {
+                    setIsGettingProof(true);
+                    getDataAndProof(url).then((proof) => {
+                        setIsGettingProof(false);
+                        addPlayer({ contractAddress, playerName, proof });
+                    })
+                }}>{isPending ? "Pending" : isConfirming ? "Confirming" : "Join Tournament"}</Button>
+                :
+                <Box sx={{ backgroundColor: 'grey.100', padding: '1rem' }}>
+                    {!error ?
+                        <Box>
+                            <Typography sx={{ textAlign: 'center', marginBottom: '10px' }}>✅ Transaction Succesful!</Typography>
+                            <Typography sx={{ color: 'blue', textAlign: 'center' }}><a href={`https://coston2-explorer.flare.network/tx/${hash}`}>View In Explorer</a></Typography>
+                        </Box>
+                        : <Typography>❌ {error.message}</Typography>}
+                </Box>}
         </Box>
     );
 }

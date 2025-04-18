@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { List, ListItem, ListItemText, ListSubheader, TextField } from '@mui/material';
 import CreateTournament from '../hooks/create-tournament';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toChessApiUrl, extractTournamentSlug } from '../utils/utils';
 import JoinTournamentButton from '../hooks/join-tournament';
 
@@ -49,9 +49,8 @@ export default function TransitionsModal({ open, onClose, mode, contractAddress,
     const [fetchedTournament, setFetchedTournament] = useState(false);
     const [playerName, setPlayerName] = useState("");
 
-    async function fetchTournament(event: any) {
-        event.preventDefault();
-        const chessApiUrl = toChessApiUrl(tournamentData.url);
+    async function fetchTournament(url: string) {
+        const chessApiUrl = toChessApiUrl(url);
 
         await fetch(chessApiUrl!, {
             method: 'GET',
@@ -100,7 +99,10 @@ export default function TransitionsModal({ open, onClose, mode, contractAddress,
                                         <TextField id="outlined-basic" label="Chess.com URL" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={tournamentData.url} onChange={(e) => {
                                             setTournamentData({ ...tournamentData, url: e.target.value })
                                         }} />
-                                        <Button variant="outlined" onClick={(e) => fetchTournament(e)} type="submit">Link</Button>
+                                        <Button variant="outlined" onClick={(e) => {
+                                            e.preventDefault();
+                                            fetchTournament(tournamentData.url)
+                                        }} type="submit">Link</Button>
                                     </Box>
                                     {fetchedTournament ?
                                         <Box sx={{ minWidth: '500px', display: 'flex', flexDirection: 'column', alignItems: 'center', height: '400px' }}>
@@ -149,11 +151,17 @@ export default function TransitionsModal({ open, onClose, mode, contractAddress,
                                         </Box> : ""}
                                 </Box>
                                 :
-                                <Box>
-                                    {contractAddress}
-                                    <TextField id="outlined-basic" label="Chess.com Username" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={playerName} onChange={(e) => {
+                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '500px' }}>
+                                    <Typography variant="h5" component="h5">Join Tournament</Typography>
+                                    <List>
+                                        <ListItem>
+                                            <Typography>Contract Address: {contractAddress}</Typography>
+                                        </ListItem>
+                                    </List>
+                                    <TextField id="outlined-basic" label="Your Chess.com Username" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={playerName} onChange={(e) => {
                                         setPlayerName(e.target.value);
                                     }} />
+
                                     <JoinTournamentButton playerName={playerName} contractAddress={contractAddress as `0x${string}`} url={url} />
                                 </Box>
                             }
