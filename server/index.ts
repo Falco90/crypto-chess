@@ -4,11 +4,13 @@ import {
     submitAttestationRequest,
     retrieveDataAndProofBase,
 } from "./fdc/Base";
+import cors from 'cors';
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(cors());
 
 const {
     JQ_VERIFIER_URL_TESTNET,
@@ -20,31 +22,24 @@ const attestationTypeBase = "IJsonApi";
 const sourceIdBase = "WEB2";
 const verifierUrlBase = JQ_VERIFIER_URL_TESTNET;
 
-// prepare attestation -- backend
-// submit attestation -- backend
-// retrieve proof and data -- backend
-// verify proof -- backend
-// send proof and data to frontend
-// interact with contract -- frontend
-
 app.post('/api/add-player', async (req, res) => {
     const { url } = req.body;
 
-    const apiUrl = url;
     const postprocessJq = `{url : .url, players : [.players[].username]}`;
     const abiSignature = `{\"components\": [{\"internalType\": \"string\", \"name\": \"url\", \"type\": \"string\"},{\"internalType\": \"string[]\", \"name\": \"players\", \"type\": \"string[]\"}],\"name\": \"task\",\"type\": \"tuple\"}`;
 
     //prepare attestation
-    const data = await prepareAttestationRequest(apiUrl, postprocessJq, abiSignature);
+    const data = await prepareAttestationRequest(url, postprocessJq, abiSignature);
 
     const abiEncodedRequest = data.abiEncodedRequest;
+
     //submit attestation
     const roundId = await submitAttestationRequest(abiEncodedRequest);
     console.log("roundID: ", roundId);
 
-    //retrieve proof and data
+    //retrieve proof and data and send to frontend
     const dataAndProof = await retrieveDataAndProof(abiEncodedRequest, roundId);
-    res.json({ dataAndProof: dataAndProof });
+    res.json(dataAndProof);
 }
 );
 

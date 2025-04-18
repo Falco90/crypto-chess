@@ -9,6 +9,7 @@ import { List, ListItem, ListItemText, ListSubheader, TextField } from '@mui/mat
 import CreateTournament from '../hooks/create-tournament';
 import { useState } from 'react';
 import { toChessApiUrl, extractTournamentSlug } from '../utils/utils';
+import JoinTournamentButton from '../hooks/join-tournament';
 
 const style = {
     position: 'absolute',
@@ -31,9 +32,11 @@ export enum Mode {
 type pageProps = {
     open: boolean,
     onClose: () => void,
-    mode: Mode
+    mode: Mode,
+    contractAddress: string,
+    url: string
 }
-export default function TransitionsModal({ open, onClose, mode}: pageProps) {
+export default function TransitionsModal({ open, onClose, mode, contractAddress, url }: pageProps) {
     const [tournamentData, setTournamentData] = useState({
         name: "",
         url: "",
@@ -44,6 +47,7 @@ export default function TransitionsModal({ open, onClose, mode}: pageProps) {
     });
     const [fee, setFee] = useState("0");
     const [fetchedTournament, setFetchedTournament] = useState(false);
+    const [playerName, setPlayerName] = useState("");
 
     async function fetchTournament(event: any) {
         event.preventDefault();
@@ -60,7 +64,7 @@ export default function TransitionsModal({ open, onClose, mode}: pageProps) {
                 organizer: data.creator,
                 status: data.status,
                 type: data.settings.type,
-                players: data.players.map((player: {username: string}) => player.username)
+                players: data.players.map((player: { username: string }) => player.username)
             })
 
             setFetchedTournament(true);
@@ -87,61 +91,72 @@ export default function TransitionsModal({ open, onClose, mode}: pageProps) {
                 <Fade in={open}>
                     <Box sx={style}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '600px' }}>
-
-                            <Typography variant='h5' component='h5'>
-                                Create Tournament Contract
-                            </Typography>
-                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '10px', height: '100px' }}>
-                                <TextField id="outlined-basic" label="Chess.com URL" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={tournamentData.url} onChange={(e) => {
-                                    setTournamentData({ ...tournamentData, url: e.target.value })
-                                }} />
-                                <Button variant="outlined" onClick={(e) => fetchTournament(e)} type="submit">Link</Button>
-                            </Box>
-                            {fetchedTournament ?
-                                <Box sx={{ minWidth: '500px', display: 'flex', flexDirection: 'column', alignItems: 'center', height: '400px' }}>
-                                    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', height: '100%' }}>
-                                        <List sx={{ textAlign: 'center' }}>
-                                            <ListSubheader>
-                                                Tournament Details
-                                            </ListSubheader>
-                                            <ListItem>
-                                                <Typography><strong>Slug: </strong>{extractTournamentSlug(tournamentData.url)}</Typography>
-                                            </ListItem>
-                                            <ListItem>
-                                                <Typography><strong>Organizer: </strong>{tournamentData.organizer}</Typography>
-                                            </ListItem>
-                                            <ListItem>
-                                                <Typography><strong>Status: </strong>{tournamentData.status}</Typography>
-                                            </ListItem>
-                                            <ListItem>
-                                                <Typography><strong>Start Time: </strong>{tournamentData.status}</Typography>
-                                            </ListItem>
-                                            <ListItem>
-                                                <Typography><strong>Type: </strong>{tournamentData.type}</Typography>
-                                            </ListItem>
-                                        </List>
-                                        <List>
-                                            <ListSubheader>Players ({tournamentData.players.length})</ListSubheader>
-                                            {tournamentData.players.map((player) => {
-                                                return (
-                                                    <ListItem>
-                                                        <ListItemText>👤 {player}</ListItemText>
-                                                    </ListItem>
-                                                )
-                                            })}
-                                        </List>
-                                    </Box>
-                                    <Box sx={{ marginTop: 'auto', display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                                        <TextField id="outlined-basic" label="Fee (FLR)" size="small" variant="outlined" type="number" sx={{ width: '100px', marginTop: 'auto' }} value={fee} slotProps={{
-                                            htmlInput: {
-                                                min: 0,
-                                            },
-                                        }} onChange={(e) => {
-                                            setFee(e.target.value)
+                            {mode == Mode.Create ?
+                                <Box>
+                                    <Typography variant='h5' component='h5'>
+                                        Create Tournament Contract
+                                    </Typography>
+                                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '10px', height: '100px' }}>
+                                        <TextField id="outlined-basic" label="Chess.com URL" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={tournamentData.url} onChange={(e) => {
+                                            setTournamentData({ ...tournamentData, url: e.target.value })
                                         }} />
-                                        <CreateTournament url={tournamentData.url} fee={fee} />
+                                        <Button variant="outlined" onClick={(e) => fetchTournament(e)} type="submit">Link</Button>
                                     </Box>
-                                </Box> : ""}
+                                    {fetchedTournament ?
+                                        <Box sx={{ minWidth: '500px', display: 'flex', flexDirection: 'column', alignItems: 'center', height: '400px' }}>
+                                            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', height: '100%' }}>
+                                                <List sx={{ textAlign: 'center' }}>
+                                                    <ListSubheader>
+                                                        Tournament Details
+                                                    </ListSubheader>
+                                                    <ListItem>
+                                                        <Typography><strong>Slug: </strong>{extractTournamentSlug(tournamentData.url)}</Typography>
+                                                    </ListItem>
+                                                    <ListItem>
+                                                        <Typography><strong>Organizer: </strong>{tournamentData.organizer}</Typography>
+                                                    </ListItem>
+                                                    <ListItem>
+                                                        <Typography><strong>Status: </strong>{tournamentData.status}</Typography>
+                                                    </ListItem>
+                                                    <ListItem>
+                                                        <Typography><strong>Start Time: </strong>{tournamentData.status}</Typography>
+                                                    </ListItem>
+                                                    <ListItem>
+                                                        <Typography><strong>Type: </strong>{tournamentData.type}</Typography>
+                                                    </ListItem>
+                                                </List>
+                                                <List>
+                                                    <ListSubheader>Players ({tournamentData.players.length})</ListSubheader>
+                                                    {tournamentData.players.map((player) => {
+                                                        return (
+                                                            <ListItem>
+                                                                <ListItemText>👤 {player}</ListItemText>
+                                                            </ListItem>
+                                                        )
+                                                    })}
+                                                </List>
+                                            </Box>
+                                            <Box sx={{ marginTop: 'auto', display: 'flex', flexDirection: 'row', gap: '10px' }}>
+                                                <TextField id="outlined-basic" label="Fee (FLR)" size="small" variant="outlined" type="number" sx={{ width: '100px', marginTop: 'auto' }} value={fee} slotProps={{
+                                                    htmlInput: {
+                                                        min: 0,
+                                                    },
+                                                }} onChange={(e) => {
+                                                    setFee(e.target.value)
+                                                }} />
+                                                <CreateTournament url={tournamentData.url} fee={fee} />
+                                            </Box>
+                                        </Box> : ""}
+                                </Box>
+                                :
+                                <Box>
+                                    {contractAddress}
+                                    <TextField id="outlined-basic" label="Chess.com Username" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={playerName} onChange={(e) => {
+                                        setPlayerName(e.target.value);
+                                    }} />
+                                    <JoinTournamentButton playerName={playerName} contractAddress={contractAddress as `0x${string}`} url={url} />
+                                </Box>
+                            }
                         </Box>
                     </Box>
                 </Fade>

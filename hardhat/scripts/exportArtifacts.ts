@@ -1,16 +1,14 @@
-// scripts/exportArtifacts.ts
 import fs from 'fs';
 import path from 'path';
 
 type ContractPath = {
-    source: string; // artifact location relative to project root
-    target?: string; // optional name to use in server/artifacts
+    source: string;
+    target?: string;
 };
 
-// 💡 Add all contract paths (relative to artifacts/) here:
 const contractsToExport: ContractPath[] = [
-    { source: '@flarenetwork/flare-periphery-contracts/coston2/ContractRegistry.sol/ContractRegistry.json' },
     { source: '@flarenetwork/flare-periphery-contracts/coston2/IJsonApiVerification.sol/IJsonApiVerification.json'},
+    { source: '@flarenetwork/flare-periphery-contracts/coston2/ContractRegistry.sol/ContractRegistry.json' },
     { source: '@flarenetwork/flare-periphery-contracts/coston2/IFdcHub.sol/IFdcHub.json'},
     { source: '@flarenetwork/flare-periphery-contracts/coston2/IFdcHub.sol/IFdcHub.json'},
     { source: '@flarenetwork/flare-periphery-contracts/coston2/IFlareSystemsManager.sol/IFlareSystemsManager.json'},

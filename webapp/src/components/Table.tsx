@@ -7,9 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Address } from 'viem';
+import { Address, formatEther } from 'viem';
 import { extractTournamentSlug, toChessApiUrl, truncateAddress } from '../utils/utils';
 import { Box, Button } from '@mui/material';
+import { Mode } from './Modal';
 
 interface Column {
     id: 'url' | 'contractAddress' | 'fee';
@@ -26,7 +27,7 @@ const columns: readonly Column[] = [
         id: 'fee',
         label: 'Fee',
         align: 'left',
-        format: (value: number) => value.toLocaleString('en-US').concat(" FLR"),
+        format: (value: bigint) => formatEther(value).concat(" FLR"),
     }
 ];
 
@@ -39,10 +40,12 @@ type Tournament = {
 type pageProps = {
     rows: Tournament[],
     onOpen: () => void,
-    setMode: () => void
+    setMode: (arg0: Mode) => void,
+    setContractAddress: (arg0: string) => void,
+    setUrl: (arg0: string) => void
 }
 
-export default function StickyHeadTable({ rows, onOpen, setMode }: pageProps) {
+export default function StickyHeadTable({ rows, onOpen, setMode, setContractAddress, setUrl }: pageProps) {
     return (
         <TableContainer sx={{ height: '400px', width: '500px', backgroundColor: 'white' }}>
             <Table stickyHeader aria-label="sticky table" sx={{
@@ -82,7 +85,9 @@ export default function StickyHeadTable({ rows, onOpen, setMode }: pageProps) {
                                             color="secondary"
                                             onClick={() => {
                                                 onOpen();
-                                                setMode();
+                                                setMode(Mode.View);
+                                                setContractAddress(row.contractAddress);
+                                                setUrl(toChessApiUrl(row.url)!);
                                             }}
                                         >
                                             View

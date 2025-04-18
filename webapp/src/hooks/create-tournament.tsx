@@ -1,5 +1,5 @@
 import { useWriteContract } from 'wagmi'
-import { Address } from 'viem'
+import { Address, parseEther } from 'viem'
 import factoryJson from "../contracts/ChessTournamentFactory.json"
 import { Button } from '@mui/material'
 
@@ -19,7 +19,7 @@ function CreateTournament({ url, fee }: pageProps) {
           abi: factoryJson.abi,
           address: factoryAddress as Address,
           functionName: 'createChessTournament',
-          args: [url, fee]
+          args: [url, parseEther(fee)]
         })
       }
     >
