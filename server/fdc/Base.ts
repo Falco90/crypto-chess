@@ -148,7 +148,7 @@ async function retrieveDataAndProofBase(
 ) {
   const relay = await getRelay();
   while (!(await relay.isFinalized(200, roundId))) {
-    await sleep(35000);
+    await sleep(30000);
   }
 
   const request = {
