@@ -1,7 +1,7 @@
 import { useReadContract } from "wagmi";
 import factoryJson from '../contracts/ChessTournamentFactory.json'
 import { Address } from "viem";
-import StickyHeadTable from "../components/Table";
+import TournamentTable from "../components/Table";
 import { Mode } from "../components/Modal";
 
 type Tournament = {
@@ -13,10 +13,13 @@ type Tournament = {
 type pageProps = {
     onOpen: () => void,
     setMode: (arg0: Mode) => void,
-    setContractAddress: (arg0: string) => void
-    setUrl: (arg0: string) => void
+    setTournamentContractData: (arg0: {
+        address: string,
+        url: string,
+        fee: bigint
+    }) => void
 }
-function GetTournaments({ onOpen, setMode, setContractAddress, setUrl }: pageProps) {
+function GetTournaments({ onOpen, setMode, setTournamentContractData }: pageProps) {
     const { data, isLoading, isError, error } = useReadContract({
         abi: factoryJson.abi,
         address: process.env.NEXT_PUBLIC_FACTORY_ADDRESS as Address,
@@ -32,7 +35,7 @@ function GetTournaments({ onOpen, setMode, setContractAddress, setUrl }: pagePro
     if (isError) return <div>Error: {error?.message}</div>
 
     return (
-        <StickyHeadTable rows={data} onOpen={onOpen} setMode={setMode} setContractAddress={setContractAddress} setUrl={setUrl} />
+        <TournamentTable rows={data} onOpen={onOpen} setMode={setMode} setTournamentContractData={setTournamentContractData} />
 
     )
 }

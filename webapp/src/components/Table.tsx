@@ -41,11 +41,14 @@ type pageProps = {
     rows: Tournament[],
     onOpen: () => void,
     setMode: (arg0: Mode) => void,
-    setContractAddress: (arg0: string) => void,
-    setUrl: (arg0: string) => void
+    setTournamentContractData: (arg0: {
+        address: string,
+        url: string,
+        fee: bigint
+    }) => void
 }
 
-export default function StickyHeadTable({ rows, onOpen, setMode, setContractAddress, setUrl }: pageProps) {
+export default function TournamentTable({ rows, onOpen, setMode, setTournamentContractData }: pageProps) {
     return (
         <TableContainer sx={{ height: '400px', width: '500px', backgroundColor: 'white' }}>
             <Table stickyHeader aria-label="sticky table" sx={{
@@ -86,8 +89,11 @@ export default function StickyHeadTable({ rows, onOpen, setMode, setContractAddr
                                             onClick={() => {
                                                 onOpen();
                                                 setMode(Mode.View);
-                                                setContractAddress(row.contractAddress);
-                                                setUrl(toChessApiUrl(row.url)!);
+                                                setTournamentContractData({
+                                                    address: row.contractAddress,
+                                                    url: toChessApiUrl(row.url)!,
+                                                    fee: row.fee
+                                                })
                                             }}
                                         >
                                             View

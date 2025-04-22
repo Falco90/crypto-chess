@@ -19,6 +19,24 @@ export function toChessApiUrl(url: string): string | null {
     }
 }
 
+export function toChessPageUrl(apiUrl: string): string | null {
+    try {
+        const parsed = new URL(apiUrl)
+        const parts = parsed.pathname.split('/').filter(Boolean)
+
+        if (parsed.hostname === 'api.chess.com' && parts[0] === 'pub' && parts[1] === 'tournament' && parts.length === 3) {
+            const slug = parts[2]
+            return `https://www.chess.com/tournament/${slug}`
+        }
+
+        return null
+    } catch (err) {
+        return null
+    }
+}
+
+
+
 export function extractTournamentSlug(url: string): string | null {
     try {
         const parsed = new URL(url)

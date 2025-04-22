@@ -4,7 +4,7 @@ import {
 } from 'wagmi';
 import { abi as ChessTournamentABI } from '../contracts/ChessTournamentImpl.json';
 import JsonApiVerificationJson from '../contracts/utils/IJsonApiVerification.json';
-import { Address, decodeAbiParameters, parseEther } from 'viem';
+import { decodeAbiParameters, parseEther } from 'viem';
 import { Box, Button, Typography, CircularProgress } from '@mui/material';
 import { useState } from 'react';
 
@@ -15,6 +15,7 @@ type AddPlayerParams = {
         response_hex: `0x${string}`;
         proof: string[];
     };
+    fee: bigint;
 };
 
 export function useAddPlayer() {
@@ -34,9 +35,9 @@ export function useAddPlayer() {
         contractAddress,
         playerName,
         proof,
+        fee
     }: AddPlayerParams) => {
         const responseType = JsonApiVerificationJson.abi[0].inputs[0].components[1];
-
         const decoded = decodeAbiParameters(
             [
                 {
@@ -61,7 +62,7 @@ export function useAddPlayer() {
                 },
                 playerName,
             ],
-            value: parseEther("2")
+            value: fee
         });
     };
 
@@ -90,8 +91,9 @@ async function getDataAndProof(url: string) {
     return data;
 }
 
-function JoinTournamentButton({ playerName, contractAddress, url }: { playerName: string, contractAddress: Address, url: string }) {
+function JoinTournamentButton({ playerName, tournamentContractData }: { playerName: string, tournamentContractData: { address: string, url: string, fee: bigint } }) {
     const [isGettingProof, setIsGettingProof] = useState(false);
+    console.log("Fee JoinTournamentButton: ", tournamentContractData.fee);
 
     const {
         addPlayer,
@@ -113,9 +115,9 @@ function JoinTournamentButton({ playerName, contractAddress, url }: { playerName
             {!isConfirmed ?
                 <Button variant="outlined" disabled={isPending || isConfirming || isGettingProof} onClick={() => {
                     setIsGettingProof(true);
-                    getDataAndProof(url).then((proof) => {
+                    getDataAndProof(tournamentContractData.url).then((proof) => {
                         setIsGettingProof(false);
-                        addPlayer({ contractAddress, playerName, proof });
+                        addPlayer({ contractAddress: tournamentContractData.address as `0x${string}`, playerName, proof, fee: tournamentContractData.fee });
                     })
                 }}>{isPending ? "Pending" : isConfirming ? "Confirming" : "Join Tournament"}</Button>
                 :

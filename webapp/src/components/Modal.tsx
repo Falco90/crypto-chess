@@ -33,10 +33,13 @@ type pageProps = {
     open: boolean,
     onClose: () => void,
     mode: Mode,
-    contractAddress: string,
-    url: string
+    tournamentContractData: {
+        address: string,
+        url: string,
+        fee: bigint
+    }
 }
-export default function TransitionsModal({ open, onClose, mode, contractAddress, url }: pageProps) {
+export default function TransitionsModal({ open, onClose, mode, tournamentContractData }: pageProps) {
     const [tournamentData, setTournamentData] = useState({
         name: "",
         url: "",
@@ -50,9 +53,11 @@ export default function TransitionsModal({ open, onClose, mode, contractAddress,
     const [playerName, setPlayerName] = useState("");
 
     async function fetchTournament(url: string) {
-        const chessApiUrl = toChessApiUrl(url);
+        if (mode == Mode.Create) {
+            url = toChessApiUrl(url)!;
+        }
 
-        await fetch(chessApiUrl!, {
+        await fetch(url, {
             method: 'GET',
             mode: 'cors',
         }).then(async (response) => {
@@ -67,7 +72,6 @@ export default function TransitionsModal({ open, onClose, mode, contractAddress,
             })
 
             setFetchedTournament(true);
-            console.log(data);
         });
 
     }
@@ -155,14 +159,14 @@ export default function TransitionsModal({ open, onClose, mode, contractAddress,
                                     <Typography variant="h5" component="h5">Join Tournament</Typography>
                                     <List>
                                         <ListItem>
-                                            <Typography>Contract Address: {contractAddress}</Typography>
+                                            <Typography>Contract Address: {tournamentContractData.address}</Typography>
                                         </ListItem>
                                     </List>
                                     <TextField id="outlined-basic" label="Your Chess.com Username" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={playerName} onChange={(e) => {
                                         setPlayerName(e.target.value);
                                     }} />
 
-                                    <JoinTournamentButton playerName={playerName} contractAddress={contractAddress as `0x${string}`} url={url} />
+                                    <JoinTournamentButton playerName={playerName} tournamentContractData={tournamentContractData} />
                                 </Box>
                             }
                         </Box>
