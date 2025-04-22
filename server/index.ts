@@ -44,8 +44,23 @@ app.post('/api/add-player', async (req, res) => {
 );
 
 app.post('/api/finish-tournament', async (req, res) => {
-    const { contractAddress, args } = req.body;
-    res.json({ proof: '' })
+    const { url } = req.body;
+    console.log("FINISH TOURNAMENT", req.body);
+    const postprocessJq = `{url : .url, status: .status, winner : [.players[] | select(.status == "active")][0].username}`;
+    const abiSignature = `{\"components\": [{\"internalType\": \"string\", \"name\": \"url\", \"type\": \"string\"},{\"internalType\": \"string\", \"name\": \"status\", \"type\": \"string\"}, {\"internalType\": \"string\", \"name\": \"winner\", \"type\": \"string\"} ],\"name\": \"task\",\"type\": \"tuple\"}`;
+
+    //prepare attestation
+    const data = await prepareAttestationRequest(url, postprocessJq, abiSignature);
+
+    const abiEncodedRequest = data.abiEncodedRequest;
+
+    //submit attestation
+    const roundId = await submitAttestationRequest(abiEncodedRequest);
+    console.log("roundID: ", roundId);
+
+    //retrieve proof and data and send to frontend
+    const dataAndProof = await retrieveDataAndProof(abiEncodedRequest, roundId);
+    res.json(dataAndProof);
 })
 
 app.listen(port, () => {
@@ -78,8 +93,8 @@ async function prepareAttestationRequest(
 async function retrieveDataAndProof(
     abiEncodedRequest: string,
     roundId: number
-  ) {
+) {
     const url = `${COSTON2_DA_LAYER_URL}api/v1/fdc/proof-by-request-round-raw`;
     console.log("Url:", url, "\n");
     return await retrieveDataAndProofBase(url, abiEncodedRequest, roundId);
-  }
+}

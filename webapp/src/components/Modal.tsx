@@ -10,6 +10,7 @@ import CreateTournament from '../hooks/create-tournament';
 import { useEffect, useState } from 'react';
 import { toChessApiUrl, extractTournamentSlug } from '../utils/utils';
 import JoinTournamentButton from '../hooks/join-tournament';
+import FinishTournamentButton from '../hooks/finish-tournament';
 
 const style = {
     position: 'absolute',
@@ -167,6 +168,7 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
                                     }} />
 
                                     <JoinTournamentButton playerName={playerName} tournamentContractData={tournamentContractData} />
+                                    <FinishTournamentButton tournamentContractData={tournamentContractData} />
                                 </Box>
                             }
                         </Box>
