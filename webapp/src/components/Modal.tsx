@@ -59,6 +59,23 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
         }
     }, [mode]);
 
+    useEffect(() => {
+        if (!open) {
+            setTournamentApiData(
+                {
+                    name: "",
+                    url: "",
+                    organizer: "",
+                    status: "",
+                    type: "",
+                    players: []
+                }
+            )
+            setFetchedTournament(false);
+            setFee("0");
+        }
+    }, [open]);
+
     async function fetchTournament(url: string) {
         if (mode == Mode.Create) {
             url = toChessApiUrl(url)!;
@@ -103,7 +120,7 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '600px' }}>
                             {mode == Mode.Create ?
                                 <Box>
-                                    <Typography variant='h5' component='h5'>
+                                    <Typography variant='h5' component='h5' textAlign={'center'}>
                                         Create Tournament Contract
                                     </Typography>
                                     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '10px', height: '100px' }}>
@@ -163,7 +180,7 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
                                 </Box>
                                 :
                                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '500px' }}>
-                                    <Typography variant="h5" component="h5">Join Tournament</Typography>
+                                    <Typography variant="h5" component="h5">{tournamentApiData.name}</Typography>
                                     <List>
                                         <ListItem>
                                             <Typography>Slug: {tournamentApiData.url}</Typography>

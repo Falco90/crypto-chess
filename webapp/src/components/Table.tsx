@@ -21,7 +21,7 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-    { id: 'url', label: 'Slug', format: extractTournamentSlug },
+    { id: 'url', label: 'Chess.com ID', format: extractTournamentSlug },
     { id: 'contractAddress', label: 'Address', format: truncateAddress },
     {
         id: 'fee',
