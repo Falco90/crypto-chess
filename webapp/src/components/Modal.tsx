@@ -41,7 +41,7 @@ type pageProps = {
     }
 }
 export default function TransitionsModal({ open, onClose, mode, tournamentContractData }: pageProps) {
-    const [tournamentData, setTournamentData] = useState({
+    const [tournamentApiData, setTournamentApiData] = useState({
         name: "",
         url: "",
         organizer: "",
@@ -53,6 +53,12 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
     const [fetchedTournament, setFetchedTournament] = useState(false);
     const [playerName, setPlayerName] = useState("");
 
+    useEffect(() => {
+        if (mode == Mode.View) {
+            fetchTournament(tournamentContractData.url)
+        }
+    }, [mode]);
+
     async function fetchTournament(url: string) {
         if (mode == Mode.Create) {
             url = toChessApiUrl(url)!;
@@ -63,8 +69,8 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
             mode: 'cors',
         }).then(async (response) => {
             const data = await response.json();
-            setTournamentData({
-                ...tournamentData,
+            setTournamentApiData({
+                ...tournamentApiData,
                 name: data.name,
                 organizer: data.creator,
                 status: data.status,
@@ -101,12 +107,12 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
                                         Create Tournament Contract
                                     </Typography>
                                     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '10px', height: '100px' }}>
-                                        <TextField id="outlined-basic" label="Chess.com URL" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={tournamentData.url} onChange={(e) => {
-                                            setTournamentData({ ...tournamentData, url: e.target.value })
+                                        <TextField id="outlined-basic" label="Chess.com URL" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={tournamentApiData.url} onChange={(e) => {
+                                            setTournamentApiData({ ...tournamentApiData, url: e.target.value })
                                         }} />
                                         <Button variant="outlined" onClick={(e) => {
                                             e.preventDefault();
-                                            fetchTournament(tournamentData.url)
+                                            fetchTournament(tournamentApiData.url)
                                         }} type="submit">Link</Button>
                                     </Box>
                                     {fetchedTournament ?
@@ -117,24 +123,24 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
                                                         Tournament Details
                                                     </ListSubheader>
                                                     <ListItem>
-                                                        <Typography><strong>Slug: </strong>{extractTournamentSlug(tournamentData.url)}</Typography>
+                                                        <Typography><strong>Slug: </strong>{extractTournamentSlug(tournamentApiData.url)}</Typography>
                                                     </ListItem>
                                                     <ListItem>
-                                                        <Typography><strong>Organizer: </strong>{tournamentData.organizer}</Typography>
+                                                        <Typography><strong>Organizer: </strong>{tournamentApiData.organizer}</Typography>
                                                     </ListItem>
                                                     <ListItem>
-                                                        <Typography><strong>Status: </strong>{tournamentData.status}</Typography>
+                                                        <Typography><strong>Status: </strong>{tournamentApiData.status}</Typography>
                                                     </ListItem>
                                                     <ListItem>
-                                                        <Typography><strong>Start Time: </strong>{tournamentData.status}</Typography>
+                                                        <Typography><strong>Start Time: </strong>{tournamentApiData.status}</Typography>
                                                     </ListItem>
                                                     <ListItem>
-                                                        <Typography><strong>Type: </strong>{tournamentData.type}</Typography>
+                                                        <Typography><strong>Type: </strong>{tournamentApiData.type}</Typography>
                                                     </ListItem>
                                                 </List>
                                                 <List>
-                                                    <ListSubheader>Players ({tournamentData.players.length})</ListSubheader>
-                                                    {tournamentData.players.map((player) => {
+                                                    <ListSubheader>Players ({tournamentApiData.players.length})</ListSubheader>
+                                                    {tournamentApiData.players.map((player) => {
                                                         return (
                                                             <ListItem>
                                                                 <ListItemText>👤 {player}</ListItemText>
@@ -151,7 +157,7 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
                                                 }} onChange={(e) => {
                                                     setFee(e.target.value)
                                                 }} />
-                                                <CreateTournament url={tournamentData.url} fee={fee} />
+                                                <CreateTournament url={tournamentApiData.url} fee={fee} />
                                             </Box>
                                         </Box> : ""}
                                 </Box>
@@ -160,21 +166,25 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
                                     <Typography variant="h5" component="h5">Join Tournament</Typography>
                                     <List>
                                         <ListItem>
+                                            <Typography>Slug: {tournamentApiData.url}</Typography>
+                                        </ListItem>
+                                        <ListItem>
                                             <Typography>Contract Address: {tournamentContractData.address}</Typography>
                                         </ListItem>
+                                        <ListItem>
+                                            <Typography>Organizer: {tournamentApiData.organizer}</Typography>
+                                        </ListItem>
                                     </List>
-                                    <TextField id="outlined-basic" label="Your Chess.com Username" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={playerName} onChange={(e) => {
-                                        setPlayerName(e.target.value);
-                                    }} />
-
-                                    <JoinTournamentButton playerName={playerName} tournamentContractData={tournamentContractData} />
-                                    <FinishTournamentButton tournamentContractData={tournamentContractData} />
+                                    <Box sx={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                        <JoinTournamentButton playerName={playerName} setPlayerName={setPlayerName} tournamentContractData={tournamentContractData} />
+                                        <FinishTournamentButton tournamentContractData={tournamentContractData} />
+                                    </Box>
                                 </Box>
                             }
                         </Box>
                     </Box>
                 </Fade>
             </Modal>
-        </div>
+        </div >
     );
 }

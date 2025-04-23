@@ -5,7 +5,7 @@ import {
 import { abi as ChessTournamentABI } from '../contracts/ChessTournamentImpl.json';
 import JsonApiVerificationJson from '../contracts/utils/IJsonApiVerification.json';
 import { decodeAbiParameters, parseEther } from 'viem';
-import { Box, Button, Typography, CircularProgress } from '@mui/material';
+import { Box, Button, Typography, CircularProgress, TextField } from '@mui/material';
 import { useState } from 'react';
 
 type AddPlayerParams = {
@@ -91,9 +91,8 @@ async function getDataAndProof(url: string) {
     return data;
 }
 
-function JoinTournamentButton({ playerName, tournamentContractData }: { playerName: string, tournamentContractData: { address: string, url: string, fee: bigint } }) {
+function JoinTournamentButton({ playerName, setPlayerName, tournamentContractData }: { playerName: string, setPlayerName: (arg0: string) => void, tournamentContractData: { address: string, url: string, fee: bigint } }) {
     const [isGettingProof, setIsGettingProof] = useState(false);
-    console.log("Fee JoinTournamentButton: ", tournamentContractData.fee);
 
     const {
         addPlayer,
@@ -113,13 +112,18 @@ function JoinTournamentButton({ playerName, tournamentContractData }: { playerNa
                 </Box>
                 : ""}
             {!isConfirmed ?
-                <Button variant="outlined" disabled={isPending || isConfirming || isGettingProof} onClick={() => {
-                    setIsGettingProof(true);
-                    getDataAndProof(tournamentContractData.url).then((proof) => {
-                        setIsGettingProof(false);
-                        addPlayer({ contractAddress: tournamentContractData.address as `0x${string}`, playerName, proof, fee: tournamentContractData.fee });
-                    })
-                }}>{isPending ? "Pending" : isConfirming ? "Confirming" : "Join Tournament"}</Button>
+                <Box>
+                    <TextField id="outlined-basic" label="Your Chess.com Username" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={playerName} onChange={(e) => {
+                        setPlayerName(e.target.value);
+                    }} />
+                    <Button variant="outlined" disabled={isPending || isConfirming || isGettingProof} onClick={() => {
+                        setIsGettingProof(true);
+                        getDataAndProof(tournamentContractData.url).then((proof) => {
+                            setIsGettingProof(false);
+                            addPlayer({ contractAddress: tournamentContractData.address as `0x${string}`, playerName, proof, fee: tournamentContractData.fee });
+                        })
+                    }}>{isPending ? "Pending" : isConfirming ? "Confirming" : "Join"}</Button>
+                </Box>
                 :
                 <Box sx={{ backgroundColor: 'grey.100', padding: '1rem' }}>
                     {!error ?
