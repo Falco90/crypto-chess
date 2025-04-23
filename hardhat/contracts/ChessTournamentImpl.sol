@@ -115,6 +115,10 @@ contract ChessTournamentImpl is Initializable, OwnableUpgradeable {
         require(sent, "Failed to send prize");
     }
 
+    function getPlayers() public view returns (string[] memory){
+        return playerNames;
+    }
+
     function includes(
         string[] memory arr,
         string memory target
