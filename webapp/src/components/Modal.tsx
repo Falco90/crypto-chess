@@ -174,10 +174,26 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
                                         <ListItem>
                                             <Typography>Organizer: {tournamentApiData.organizer}</Typography>
                                         </ListItem>
+                                        <ListItem>
+                                            <Typography>Status: {tournamentApiData.status}</Typography>
+                                        </ListItem>
+                                        <List>
+                                            <ListSubheader>Players ({tournamentApiData.players.length})</ListSubheader>
+                                            {tournamentApiData.players.map((player) => {
+                                                return (
+                                                    <ListItem>
+                                                        <ListItemText>👤 {player} (paid)</ListItemText>
+                                                    </ListItem>
+                                                )
+                                            })}
+                                        </List>
                                     </List>
                                     <Box sx={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                        <JoinTournamentButton playerName={playerName} setPlayerName={setPlayerName} tournamentContractData={tournamentContractData} />
-                                        <FinishTournamentButton tournamentContractData={tournamentContractData} />
+                                        {tournamentApiData.status == "finished" ?
+                                            <FinishTournamentButton tournamentContractData={tournamentContractData} />
+                                            :
+                                            <JoinTournamentButton playerName={playerName} setPlayerName={setPlayerName} tournamentContractData={tournamentContractData} />
+                                        }
                                     </Box>
                                 </Box>
                             }

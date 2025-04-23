@@ -112,7 +112,7 @@ function JoinTournamentButton({ playerName, setPlayerName, tournamentContractDat
                 </Box>
                 : ""}
             {!isConfirmed ?
-                <Box>
+                <Box sx={{display: 'flex', flexDirection: 'row', gap: '10px'}}>
                     <TextField id="outlined-basic" label="Your Chess.com Username" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={playerName} onChange={(e) => {
                         setPlayerName(e.target.value);
                     }} />
