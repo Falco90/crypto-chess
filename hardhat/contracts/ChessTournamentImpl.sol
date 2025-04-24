@@ -15,6 +15,7 @@ contract ChessTournamentImpl is Initializable, OwnableUpgradeable {
     mapping(string => address) public playerNameToPlayerAddress;
     mapping(address => string) public playerAddressToPlayerName;
     string[] public playerNames;
+    bool public prizeSent;
 
     struct AddPlayerDTO {
         string url;
@@ -113,6 +114,7 @@ contract ChessTournamentImpl is Initializable, OwnableUpgradeable {
             value: prize
         }("");
         require(sent, "Failed to send prize");
+        prizeSent = true;
     }
 
     function getPlayers() public view returns (string[] memory){
