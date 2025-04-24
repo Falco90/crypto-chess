@@ -11,6 +11,9 @@ import { useEffect, useState } from 'react';
 import { toChessApiUrl, extractTournamentSlug } from '../utils/utils';
 import JoinTournamentButton from '../hooks/join-tournament';
 import FinishTournamentButton from '../hooks/finish-tournament';
+import PlayerList from '../hooks/get-players';
+import { Address, formatEther } from 'viem';
+import { truncateAddress } from '../utils/utils';
 
 const style = {
     position: 'absolute',
@@ -28,19 +31,21 @@ const style = {
 
 export enum Mode {
     Create,
-    View
+    View,
+    None
 }
 type pageProps = {
     open: boolean,
     onClose: () => void,
     mode: Mode,
+    setMode: (arg0: Mode) => void,
     tournamentContractData: {
         address: string,
         url: string,
         fee: bigint
     }
 }
-export default function TransitionsModal({ open, onClose, mode, tournamentContractData }: pageProps) {
+export default function TransitionsModal({ open, onClose, mode, setMode, tournamentContractData }: pageProps) {
     const [tournamentApiData, setTournamentApiData] = useState({
         name: "",
         url: "",
@@ -73,6 +78,7 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
             )
             setFetchedTournament(false);
             setFee("0");
+            setMode(Mode.None);
         }
     }, [open]);
 
@@ -88,6 +94,7 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
             const data = await response.json();
             setTournamentApiData({
                 ...tournamentApiData,
+                url: data.url,
                 name: data.name,
                 organizer: data.creator,
                 status: data.status,
@@ -155,16 +162,7 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
                                                         <Typography><strong>Type: </strong>{tournamentApiData.type}</Typography>
                                                     </ListItem>
                                                 </List>
-                                                <List>
-                                                    <ListSubheader>Players ({tournamentApiData.players.length})</ListSubheader>
-                                                    {tournamentApiData.players.map((player) => {
-                                                        return (
-                                                            <ListItem>
-                                                                <ListItemText>👤 {player}</ListItemText>
-                                                            </ListItem>
-                                                        )
-                                                    })}
-                                                </List>
+                                                <PlayerList contractAddress={tournamentContractData.address} apiPlayers={tournamentApiData.players} />
                                             </Box>
                                             <Box sx={{ marginTop: 'auto', display: 'flex', flexDirection: 'row', gap: '10px' }}>
                                                 <TextField id="outlined-basic" label="Fee (FLR)" size="small" variant="outlined" type="number" sx={{ width: '100px', marginTop: 'auto' }} value={fee} slotProps={{
@@ -179,33 +177,24 @@ export default function TransitionsModal({ open, onClose, mode, tournamentContra
                                         </Box> : ""}
                                 </Box>
                                 :
-                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '500px' }}>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '500px'}}>
                                     <Typography variant="h5" component="h5">{tournamentApiData.name}</Typography>
-                                    <List>
+                                    <List dense sx={{padding: '2rem'}}>
                                         <ListItem>
-                                            <Typography>Slug: {tournamentApiData.url}</Typography>
+                                            <ListItemText><strong>Url: </strong>{tournamentApiData.url}</ListItemText>
                                         </ListItem>
                                         <ListItem>
-                                            <Typography>Contract Address: {tournamentContractData.address}</Typography>
+                                            <ListItemText><strong>Address: </strong>{tournamentContractData.address}</ListItemText>
                                         </ListItem>
                                         <ListItem>
-                                            <Typography>Organizer: {tournamentApiData.organizer}</Typography>
+                                            <ListItemText><strong>Organizer: </strong>{tournamentApiData.organizer}</ListItemText>
                                         </ListItem>
                                         <ListItem>
-                                            <Typography>Status: {tournamentApiData.status}</Typography>
+                                            <ListItemText><strong>Fee: </strong>{formatEther(tournamentContractData.fee)} FLR</ListItemText>
                                         </ListItem>
-                                        <List>
-                                            <ListSubheader>Players ({tournamentApiData.players.length})</ListSubheader>
-                                            {tournamentApiData.players.map((player) => {
-                                                return (
-                                                    <ListItem>
-                                                        <ListItemText>👤 {player} (paid)</ListItemText>
-                                                    </ListItem>
-                                                )
-                                            })}
-                                        </List>
+                                        <PlayerList contractAddress={tournamentContractData.address} apiPlayers={tournamentApiData.players} />
                                     </List>
-                                    <Box sx={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                                         {tournamentApiData.status == "finished" ?
                                             <FinishTournamentButton tournamentContractData={tournamentContractData} />
                                             :

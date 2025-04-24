@@ -2,7 +2,7 @@ import {
     useWriteContract,
     useWaitForTransactionReceipt,
 } from 'wagmi';
-import { abi as ChessTournamentABI } from '../contracts/ChessTournamentImpl.json';
+import implAbi from '../contracts/ChessTournamentImplAbi.json';
 import JsonApiVerificationJson from '../contracts/utils/IJsonApiVerification.json';
 import { decodeAbiParameters, parseEther } from 'viem';
 import { Box, Button, Typography, CircularProgress } from '@mui/material';
@@ -49,7 +49,7 @@ export function useFinishTournament() {
 
         writeContract({
             address: contractAddress,
-            abi: ChessTournamentABI,
+            abi: implAbi,
             functionName: 'finishTournament',
             args: [
                 {

@@ -103,7 +103,7 @@ contract ChessTournamentImpl is Initializable, OwnableUpgradeable {
             playerNameToPlayerAddress[winner] != address(0),
             "player should have address"
         );
-        require(prize > 0, "Prize must be greater than 0");
+
         require(
             address(this).balance >= prize,
             "Not enough balance in contract"

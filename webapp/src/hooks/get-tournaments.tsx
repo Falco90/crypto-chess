@@ -1,5 +1,5 @@
 import { useReadContract } from "wagmi";
-import factoryJson from '../contracts/ChessTournamentFactory.json'
+import factoryAbi from '../contracts/ChessTournamentFactoryAbi.json'
 import { Address } from "viem";
 import TournamentTable from "../components/Table";
 import { Mode } from "../components/Modal";
@@ -21,7 +21,7 @@ type pageProps = {
 }
 function GetTournaments({ onOpen, setMode, setTournamentContractData }: pageProps) {
     const { data, isLoading, isError, error } = useReadContract({
-        abi: factoryJson.abi,
+        abi: factoryAbi,
         address: process.env.NEXT_PUBLIC_FACTORY_ADDRESS as Address,
         functionName: 'getAllChessTournaments',
     }) as {

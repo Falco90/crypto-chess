@@ -1,6 +1,6 @@
 import { useWriteContract } from 'wagmi'
 import { Address, parseEther } from 'viem'
-import factoryJson from "../contracts/ChessTournamentFactory.json"
+import factoryAbi from "../contracts/ChessTournamentFactoryAbi.json"
 import { Button } from '@mui/material'
 
 const factoryAddress = process.env.NEXT_PUBLIC_FACTORY_ADDRESS;
@@ -16,7 +16,7 @@ function CreateTournament({ url, fee }: pageProps) {
     <Button variant='outlined'
       onClick={() =>
         writeContract({
-          abi: factoryJson.abi,
+          abi: factoryAbi,
           address: factoryAddress as Address,
           functionName: 'createChessTournament',
           args: [url, parseEther(fee)]

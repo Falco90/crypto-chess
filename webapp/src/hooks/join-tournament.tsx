@@ -2,7 +2,7 @@ import {
     useWriteContract,
     useWaitForTransactionReceipt,
 } from 'wagmi';
-import { abi as ChessTournamentABI } from '../contracts/ChessTournamentImpl.json';
+import implAbi from '../contracts/ChessTournamentImplAbi.json';
 import JsonApiVerificationJson from '../contracts/utils/IJsonApiVerification.json';
 import { decodeAbiParameters, parseEther } from 'viem';
 import { Box, Button, Typography, CircularProgress, TextField } from '@mui/material';
@@ -53,7 +53,7 @@ export function useAddPlayer() {
 
         writeContract({
             address: contractAddress,
-            abi: ChessTournamentABI,
+            abi: implAbi,
             functionName: 'addPlayer',
             args: [
                 {
@@ -106,33 +106,34 @@ function JoinTournamentButton({ playerName, setPlayerName, tournamentContractDat
     return (
         <Box>
             {isGettingProof || isPending || isConfirming ?
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <CircularProgress size={40} color='secondary' />
-                    <Typography>{isGettingProof ? "Getting Proof" : isPending ? "Pending transaction in your wallet" : isConfirming ? "Confirming Transaction" : ""}</Typography>
-                </Box>
-                : ""}
-            {!isConfirmed ?
-                <Box sx={{display: 'flex', flexDirection: 'row', gap: '10px'}}>
-                    <TextField id="outlined-basic" label="Your Chess.com Username" variant="outlined" size="small" sx={{ width: '400px', alignSelf: 'center' }} value={playerName} onChange={(e) => {
-                        setPlayerName(e.target.value);
-                    }} />
-                    <Button variant="outlined" disabled={isPending || isConfirming || isGettingProof} onClick={() => {
-                        setIsGettingProof(true);
-                        getDataAndProof(tournamentContractData.url).then((proof) => {
-                            setIsGettingProof(false);
-                            addPlayer({ contractAddress: tournamentContractData.address as `0x${string}`, playerName, proof, fee: tournamentContractData.fee });
-                        })
-                    }}>{isPending ? "Pending" : isConfirming ? "Confirming" : "Join"}</Button>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                    <CircularProgress size={30} color='secondary' />
+                    <Typography>{isGettingProof ? "Verifying Player (this can take a while)..." : isPending ? "Pending Wallet Transaction..." : isConfirming ? "Confirming Transaction..." : ""}</Typography>
                 </Box>
                 :
-                <Box sx={{ backgroundColor: 'grey.100', padding: '1rem' }}>
-                    {!error ?
-                        <Box>
-                            <Typography sx={{ textAlign: 'center', marginBottom: '10px' }}>✅ Transaction Succesful!</Typography>
-                            <Typography sx={{ color: 'blue', textAlign: 'center' }}><a href={`https://coston2-explorer.flare.network/tx/${hash}`}>View In Explorer</a></Typography>
-                        </Box>
-                        : <Typography>❌ {error.message}</Typography>}
-                </Box>}
+                !isConfirmed ?
+                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+                        <TextField disabled={isPending || isConfirming || isGettingProof} id="outlined-basic" label="Your Chess.com Username" variant="outlined" size="small" sx={{ width: '250px', alignSelf: 'center' }} value={playerName} onChange={(e) => {
+                            setPlayerName(e.target.value);
+                        }} />
+                        <Button variant="outlined" disabled={isPending || isConfirming || isGettingProof} onClick={() => {
+                            setIsGettingProof(true);
+                            getDataAndProof(tournamentContractData.url).then((proof) => {
+                                setIsGettingProof(false);
+                                addPlayer({ contractAddress: tournamentContractData.address as `0x${string}`, playerName, proof, fee: tournamentContractData.fee });
+                            })
+                        }}>Join</Button>
+                    </Box>
+                    :
+                    <Box sx={{ padding: '1rem' }}>
+                        {!error ?
+                            <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
+                                <Typography sx={{ textAlign: 'center', marginBottom: '10px'}}>✅ Joined Succesfully!</Typography>
+                                <Typography sx={{ color: 'blue', textAlign: 'center' }}><a href={`https://coston2-explorer.flare.network/tx/${hash}`}>View Transaction</a></Typography>
+                            </Box>
+                            : <Typography>❌ {error.message}</Typography>}
+                    </Box>}
+
         </Box>
     );
 }

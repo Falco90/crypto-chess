@@ -12,7 +12,7 @@ import { Mode } from "../components/Modal";
 
 const Home: NextPage = () => {
   const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState(Mode.Create);
+  const [mode, setMode] = useState(Mode.None);
   const [tournamentContractData, setTournamentContractData] = useState({
     address: "",
     url: "",
@@ -34,7 +34,7 @@ const Home: NextPage = () => {
         <link href="/favicon.ico" rel="icon" />
       </Head>
       <Header />
-      <TransitionModal open={open} onClose={() => setOpen(false)} mode={mode} tournamentContractData={tournamentContractData} />
+      <TransitionModal open={open} onClose={() => setOpen(false)} mode={mode} setMode={setMode} tournamentContractData={tournamentContractData} />
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px', padding: '2rem', height: '600px' }}>
         <Box sx={{ backgroundColor: 'white', padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: '10px' }}>
           <Typography variant="h5" component="h5" sx={{ textAlign: 'center', paddingBottom: '20px' }}>
