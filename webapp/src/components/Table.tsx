@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Address, formatEther } from 'viem';
-import { extractTournamentSlug, toChessApiUrl, truncateAddress } from '../utils/utils';
+import { extractTournamentSlug, toChessApiUrl, truncateAddress, formatTournamentName } from '../utils/utils';
 import { Box, Button } from '@mui/material';
 import { Mode } from './Modal';
 
@@ -20,8 +20,11 @@ interface Column {
     format?: ((value: any) => any)
 }
 
+const formatTournamentSlug = (value: string) =>
+    formatTournamentName(extractTournamentSlug(value)!);
+
 const columns: readonly Column[] = [
-    { id: 'url', label: 'Chess.com ID', format: extractTournamentSlug },
+    { id: 'url', label: 'Name', format: formatTournamentSlug },
     { id: 'contractAddress', label: 'Address', format: truncateAddress },
     {
         id: 'fee',

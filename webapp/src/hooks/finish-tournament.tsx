@@ -85,7 +85,7 @@ async function getDataAndProof(url: string) {
     return data;
 }
 
-function FinishTournamentButton({ tournamentContractData }: { tournamentContractData: { address: string, url: string, fee: bigint } }) {
+function FinishTournamentButton({ tournamentContractData, status}: { tournamentContractData: { address: string, url: string, fee: bigint }, status: string }) {
     const [isGettingProof, setIsGettingProof] = useState(false);
 
     const {
@@ -106,13 +106,13 @@ function FinishTournamentButton({ tournamentContractData }: { tournamentContract
                 </Box>
                 : ""}
             {!isConfirmed ?
-                <Button variant="outlined" disabled={isPending || isConfirming || isGettingProof} onClick={() => {
+                <Button variant="outlined" disabled={status !== "finished" || isPending || isConfirming || isGettingProof} onClick={() => {
                     setIsGettingProof(true);
                     getDataAndProof(tournamentContractData.url).then((proof) => {
                         setIsGettingProof(false);
                         finishTournament({ contractAddress: tournamentContractData.address as `0x${string}`, proof});
                     })
-                }}>{isPending ? "Pending" : isConfirming ? "Confirming" : "Finish Tournament"}</Button>
+                }}>{isPending ? "Pending" : isConfirming ? "Confirming" : "Give Prize"}</Button>
                 :
                 <Box sx={{ backgroundColor: 'grey.100', padding: '1rem' }}>
                     {!error ?

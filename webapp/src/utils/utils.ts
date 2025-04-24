@@ -35,8 +35,6 @@ export function toChessPageUrl(apiUrl: string): string | null {
     }
 }
 
-
-
 export function extractTournamentSlug(url: string): string | null {
     try {
         const parsed = new URL(url)
@@ -50,4 +48,14 @@ export function extractTournamentSlug(url: string): string | null {
     } catch (err) {
         return null
     }
+}
+
+export function formatApiData(input: string): string {
+    return input
+      .split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+export function formatTournamentName(input: string): string {
+    return input
+      .split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }

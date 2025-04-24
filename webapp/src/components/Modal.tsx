@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { List, ListItem, ListItemText, ListSubheader, TextField } from '@mui/material';
 import CreateTournament from '../hooks/create-tournament';
 import { useEffect, useState } from 'react';
-import { toChessApiUrl, extractTournamentSlug } from '../utils/utils';
+import { toChessApiUrl, extractTournamentSlug, formatApiData } from '../utils/utils';
 import JoinTournamentButton from '../hooks/join-tournament';
 import FinishTournamentButton from '../hooks/finish-tournament';
 import PlayerList from '../hooks/get-players';
@@ -57,6 +57,7 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
     const [fee, setFee] = useState("0");
     const [fetchedTournament, setFetchedTournament] = useState(false);
     const [playerName, setPlayerName] = useState("");
+    const [allPaid, setAllPaid] = useState(false);
 
     useEffect(() => {
         if (mode == Mode.View) {
@@ -162,7 +163,6 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
                                                         <Typography><strong>Type: </strong>{tournamentApiData.type}</Typography>
                                                     </ListItem>
                                                 </List>
-                                                <PlayerList contractAddress={tournamentContractData.address} apiPlayers={tournamentApiData.players} />
                                             </Box>
                                             <Box sx={{ marginTop: 'auto', display: 'flex', flexDirection: 'row', gap: '10px' }}>
                                                 <TextField id="outlined-basic" label="Fee (FLR)" size="small" variant="outlined" type="number" sx={{ width: '100px', marginTop: 'auto' }} value={fee} slotProps={{
@@ -177,9 +177,9 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
                                         </Box> : ""}
                                 </Box>
                                 :
-                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '500px'}}>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '500px' }}>
                                     <Typography variant="h5" component="h5">{tournamentApiData.name}</Typography>
-                                    <List dense sx={{padding: '2rem'}}>
+                                    <List dense sx={{ padding: '2rem' }}>
                                         <ListItem>
                                             <ListItemText><strong>Url: </strong>{tournamentApiData.url}</ListItemText>
                                         </ListItem>
@@ -192,13 +192,18 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
                                         <ListItem>
                                             <ListItemText><strong>Fee: </strong>{formatEther(tournamentContractData.fee)} FLR</ListItemText>
                                         </ListItem>
-                                        <PlayerList contractAddress={tournamentContractData.address} apiPlayers={tournamentApiData.players} />
+                                        <ListItem>
+                                            <ListItemText><strong>Status: </strong> {formatApiData(tournamentApiData.status)}</ListItemText>
+                                        </ListItem>
+                                        <PlayerList contractAddress={tournamentContractData.address} apiPlayers={tournamentApiData.players} allPaid={allPaid} setAllPaid={setAllPaid} />
                                     </List>
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                        {tournamentApiData.status == "finished" ?
-                                            <FinishTournamentButton tournamentContractData={tournamentContractData} />
-                                            :
-                                            <JoinTournamentButton playerName={playerName} setPlayerName={setPlayerName} tournamentContractData={tournamentContractData} />
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                        {
+                                            !allPaid ?
+                                                <JoinTournamentButton playerName={playerName} setPlayerName={setPlayerName} tournamentContractData={tournamentContractData} />
+                                                :
+                                                <FinishTournamentButton status={tournamentApiData.status} tournamentContractData={tournamentContractData} />
+
                                         }
                                     </Box>
                                 </Box>
