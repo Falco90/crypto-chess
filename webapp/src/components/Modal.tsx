@@ -198,7 +198,6 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
                                         </ListItem>
                                         <PlayerList contractAddress={tournamentContractData.address} apiPlayers={tournamentApiData.players} allPaid={allPaid} setAllPaid={setAllPaid} />
                                         {tournamentApiData.status == "finished" ?
-
                                             <Winner contractAddress={tournamentContractData.address} />
                                             : ""
                                         }

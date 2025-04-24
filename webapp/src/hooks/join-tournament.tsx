@@ -128,8 +128,8 @@ function JoinTournamentButton({ playerName, setPlayerName, tournamentContractDat
                     <Box sx={{ padding: '1rem' }}>
                         {!error ?
                             <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
-                                <Typography sx={{ textAlign: 'center', marginBottom: '10px'}}>✅ Joined Succesfully!</Typography>
-                                <Typography sx={{ color: 'blue', textAlign: 'center' }}><a href={`https://coston2-explorer.flare.network/tx/${hash}`}>View Transaction</a></Typography>
+                                <Typography sx={{ textAlign: 'center', marginBottom: '10px'}}>✅ Transaction Succesful!</Typography>
+                                <Typography sx={{ color: 'blue', textAlign: 'center' }}><a href={`https://coston2-explorer.flare.network/tx/${hash}`}>View In Explorer</a></Typography>
                             </Box>
                             : <Typography>❌ {error.message}</Typography>}
                     </Box>}

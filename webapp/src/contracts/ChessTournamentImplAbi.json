@@ -1,411 +1,424 @@
 [
-  {
-    "inputs": [],
-    "name": "InvalidInitialization",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NotInitializing",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnableInvalidOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "OwnableUnauthorizedAccount",
-    "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint64",
-        "name": "version",
-        "type": "uint64"
-      }
-    ],
-    "name": "Initialized",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "previousOwner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "bytes32[]",
-            "name": "merkleProof",
-            "type": "bytes32[]"
-          },
-          {
-            "components": [
-              {
-                "internalType": "bytes32",
-                "name": "attestationType",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "bytes32",
-                "name": "sourceId",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "uint64",
-                "name": "votingRound",
-                "type": "uint64"
-              },
-              {
-                "internalType": "uint64",
-                "name": "lowestUsedTimestamp",
-                "type": "uint64"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "url",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "postprocessJq",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "abi_signature",
-                    "type": "string"
-                  }
-                ],
-                "internalType": "struct IJsonApi.RequestBody",
-                "name": "requestBody",
-                "type": "tuple"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "bytes",
-                    "name": "abi_encoded_data",
-                    "type": "bytes"
-                  }
-                ],
-                "internalType": "struct IJsonApi.ResponseBody",
-                "name": "responseBody",
-                "type": "tuple"
-              }
-            ],
-            "internalType": "struct IJsonApi.Response",
-            "name": "data",
-            "type": "tuple"
-          }
-        ],
-        "internalType": "struct IJsonApi.Proof",
-        "name": "data",
-        "type": "tuple"
-      },
-      {
-        "internalType": "string",
-        "name": "_playerName",
-        "type": "string"
-      }
-    ],
-    "name": "addPlayer",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "fee",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "bytes32[]",
-            "name": "merkleProof",
-            "type": "bytes32[]"
-          },
-          {
-            "components": [
-              {
-                "internalType": "bytes32",
-                "name": "attestationType",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "bytes32",
-                "name": "sourceId",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "uint64",
-                "name": "votingRound",
-                "type": "uint64"
-              },
-              {
-                "internalType": "uint64",
-                "name": "lowestUsedTimestamp",
-                "type": "uint64"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "url",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "postprocessJq",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "abi_signature",
-                    "type": "string"
-                  }
-                ],
-                "internalType": "struct IJsonApi.RequestBody",
-                "name": "requestBody",
-                "type": "tuple"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "bytes",
-                    "name": "abi_encoded_data",
-                    "type": "bytes"
-                  }
-                ],
-                "internalType": "struct IJsonApi.ResponseBody",
-                "name": "responseBody",
-                "type": "tuple"
-              }
-            ],
-            "internalType": "struct IJsonApi.Response",
-            "name": "data",
-            "type": "tuple"
-          }
-        ],
-        "internalType": "struct IJsonApi.Proof",
-        "name": "data",
-        "type": "tuple"
-      }
-    ],
-    "name": "finishTournament",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getPlayers",
-    "outputs": [
-      {
-        "internalType": "string[]",
-        "name": "",
-        "type": "string[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_organizer",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_url",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_fee",
-        "type": "uint256"
-      }
-    ],
-    "name": "initialize",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "playerAddressToPlayerName",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "name": "playerNameToPlayerAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "playerNames",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "prize",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "renounceOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "url",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "winner",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  }
-]
+    {
+      "inputs": [],
+      "name": "InvalidInitialization",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotInitializing",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "version",
+          "type": "uint64"
+        }
+      ],
+      "name": "Initialized",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes32[]",
+              "name": "merkleProof",
+              "type": "bytes32[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "bytes32",
+                  "name": "attestationType",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "sourceId",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "votingRound",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "lowestUsedTimestamp",
+                  "type": "uint64"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "url",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "postprocessJq",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "abi_signature",
+                      "type": "string"
+                    }
+                  ],
+                  "internalType": "struct IJsonApi.RequestBody",
+                  "name": "requestBody",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "bytes",
+                      "name": "abi_encoded_data",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct IJsonApi.ResponseBody",
+                  "name": "responseBody",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct IJsonApi.Response",
+              "name": "data",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct IJsonApi.Proof",
+          "name": "data",
+          "type": "tuple"
+        },
+        {
+          "internalType": "string",
+          "name": "_playerName",
+          "type": "string"
+        }
+      ],
+      "name": "addPlayer",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "fee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes32[]",
+              "name": "merkleProof",
+              "type": "bytes32[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "bytes32",
+                  "name": "attestationType",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "sourceId",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "votingRound",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "lowestUsedTimestamp",
+                  "type": "uint64"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "string",
+                      "name": "url",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "postprocessJq",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "abi_signature",
+                      "type": "string"
+                    }
+                  ],
+                  "internalType": "struct IJsonApi.RequestBody",
+                  "name": "requestBody",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "bytes",
+                      "name": "abi_encoded_data",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct IJsonApi.ResponseBody",
+                  "name": "responseBody",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct IJsonApi.Response",
+              "name": "data",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct IJsonApi.Proof",
+          "name": "data",
+          "type": "tuple"
+        }
+      ],
+      "name": "finishTournament",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getPlayers",
+      "outputs": [
+        {
+          "internalType": "string[]",
+          "name": "",
+          "type": "string[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_organizer",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_url",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_fee",
+          "type": "uint256"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "playerAddressToPlayerName",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "name": "playerNameToPlayerAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "playerNames",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "prize",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "prizeSent",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "url",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "winner",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
