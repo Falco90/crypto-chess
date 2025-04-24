@@ -122,7 +122,7 @@ function JoinTournamentButton({ playerName, setPlayerName, tournamentContractDat
                                 setIsGettingProof(false);
                                 addPlayer({ contractAddress: tournamentContractData.address as `0x${string}`, playerName, proof, fee: tournamentContractData.fee });
                             })
-                        }}>Join</Button>
+                        }}>Pay Fee</Button>
                     </Box>
                     :
                     <Box sx={{ padding: '1rem' }}>

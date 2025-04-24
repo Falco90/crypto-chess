@@ -14,6 +14,7 @@ import FinishTournamentButton from '../hooks/finish-tournament';
 import PlayerList from '../hooks/get-players';
 import { Address, formatEther } from 'viem';
 import { truncateAddress } from '../utils/utils';
+import Winner from '../hooks/get-winner';
 
 const style = {
     position: 'absolute',
@@ -196,6 +197,11 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
                                             <ListItemText><strong>Status: </strong> {formatApiData(tournamentApiData.status)}</ListItemText>
                                         </ListItem>
                                         <PlayerList contractAddress={tournamentContractData.address} apiPlayers={tournamentApiData.players} allPaid={allPaid} setAllPaid={setAllPaid} />
+                                        {tournamentApiData.status == "finished" ?
+
+                                            <Winner contractAddress={tournamentContractData.address} />
+                                            : ""
+                                        }
                                     </List>
                                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                         {
