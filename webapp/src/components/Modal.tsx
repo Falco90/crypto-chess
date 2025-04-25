@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { List, ListItem, ListItemText, ListSubheader, TextField } from '@mui/material';
 import CreateTournament from '../hooks/create-tournament';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { toChessApiUrl, extractTournamentSlug, formatApiData } from '../utils/utils';
 import JoinTournamentButton from '../hooks/join-tournament';
 import FinishTournamentButton from '../hooks/finish-tournament';
@@ -58,7 +58,7 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
     const [fee, setFee] = useState("0");
     const [fetchedTournament, setFetchedTournament] = useState(false);
     const [playerName, setPlayerName] = useState("");
-    const [allPaid, setAllPaid] = useState(false);
+    const [allPaid, setAllPaid]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
 
     useEffect(() => {
         if (mode == Mode.View) {

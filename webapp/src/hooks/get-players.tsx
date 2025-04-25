@@ -2,10 +2,10 @@ import { useReadContract } from "wagmi";
 import implAbi from '../contracts/ChessTournamentImplAbi.json'
 import { Address } from "viem";
 import { List, ListItem, ListItemText, ListSubheader, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
-function PlayerList({ contractAddress, apiPlayers, allPaid, setAllPaid }: { contractAddress: string, apiPlayers: string[], allPaid: boolean, setAllPaid: (arg0: boolean) => void }) {
-    const { data, isLoading, isError, error } = useReadContract({
+function PlayerList({ contractAddress, apiPlayers, allPaid, setAllPaid }: { contractAddress: string, apiPlayers: string[], allPaid: boolean, setAllPaid: Dispatch<SetStateAction<boolean>> }) {
+    const { data: playersPaid, isLoading, isError, error } = useReadContract({
         abi: implAbi,
         address: contractAddress as Address,
         functionName: 'getPlayers',
@@ -16,21 +16,20 @@ function PlayerList({ contractAddress, apiPlayers, allPaid, setAllPaid }: { cont
         error: Error | null
     }
 
+    useEffect(() => {
+        if (!playersPaid || !playersPaid.length || !apiPlayers.length) {
+            setAllPaid(false);
+            return;
+        }
+
+        const allPresent = apiPlayers.every(player =>
+            playersPaid.includes(player)
+        );
+        setAllPaid(prev => (prev !== allPresent ? allPresent : prev));
+    }, [playersPaid, apiPlayers]);
+
     if (isLoading) return <div>Loading...</div>
     if (isError) return <div>Error: {error?.message}</div>
-
-
-    console.log("api players: ", apiPlayers);
-    console.log("contract players: ", data);
-    useEffect(() => {
-        if (data.length === 0) return;
-        if (apiPlayers.every(player => data.includes(player))) {
-            setAllPaid(true);
-        } else {
-            setAllPaid(false);
-        }
-        console.log(allPaid);
-    }, [data, apiPlayers])
 
     return (
         <Table size="small">
@@ -44,7 +43,7 @@ function PlayerList({ contractAddress, apiPlayers, allPaid, setAllPaid }: { cont
                 {apiPlayers.map((player, index) => (
                     <TableRow key={index}>
                         <TableCell>👤 {player}</TableCell>
-                        <TableCell>{data.includes(player) ? "✅" : ""}</TableCell>
+                        <TableCell>{playersPaid.includes(player) ? "✅" : ""}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>
