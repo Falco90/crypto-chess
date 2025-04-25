@@ -8,12 +8,11 @@ import Typography from '@mui/material/Typography';
 import { List, ListItem, ListItemText, ListSubheader, TextField } from '@mui/material';
 import CreateTournament from '../hooks/create-tournament';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { toChessApiUrl, extractTournamentSlug, formatApiData } from '../utils/utils';
+import { toChessApiUrl, extractTournamentSlug, formatApiData, formatTournamentName } from '../utils/utils';
 import JoinTournamentButton from '../hooks/join-tournament';
 import FinishTournamentButton from '../hooks/finish-tournament';
 import PlayerList from '../hooks/get-players';
 import { Address, formatEther } from 'viem';
-import { truncateAddress } from '../utils/utils';
 import Winner from '../hooks/get-winner';
 
 const style = {
@@ -149,32 +148,29 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
                                                         Tournament Details
                                                     </ListSubheader>
                                                     <ListItem>
-                                                        <Typography><strong>Slug: </strong>{extractTournamentSlug(tournamentApiData.url)}</Typography>
+                                                        <Typography><strong>Name: </strong>{formatTournamentName(extractTournamentSlug(tournamentApiData.url)!)}</Typography>
                                                     </ListItem>
                                                     <ListItem>
                                                         <Typography><strong>Organizer: </strong>{tournamentApiData.organizer}</Typography>
                                                     </ListItem>
                                                     <ListItem>
-                                                        <Typography><strong>Status: </strong>{tournamentApiData.status}</Typography>
+                                                        <Typography><strong>Status: </strong>{formatApiData(tournamentApiData.status)}</Typography>
                                                     </ListItem>
                                                     <ListItem>
-                                                        <Typography><strong>Start Time: </strong>{tournamentApiData.status}</Typography>
-                                                    </ListItem>
-                                                    <ListItem>
-                                                        <Typography><strong>Type: </strong>{tournamentApiData.type}</Typography>
+                                                        <Typography><strong>Type: </strong>{formatApiData(tournamentApiData.type)}</Typography>
                                                     </ListItem>
                                                 </List>
+                                                <List>
+                                                    <ListSubheader>Players ({tournamentApiData.players.length})</ListSubheader>
+                                                    {tournamentApiData.players.map((player) => {
+                                                        return (
+                                                            <ListItem>
+                                                                <ListItemText>👤 {player}</ListItemText>
+                                                            </ListItem>)
+                                                    })}
+                                                </List>
                                             </Box>
-                                            <Box sx={{ marginTop: 'auto', display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                                                <TextField id="outlined-basic" label="Fee (FLR)" size="small" variant="outlined" type="number" sx={{ width: '100px', marginTop: 'auto' }} value={fee} slotProps={{
-                                                    htmlInput: {
-                                                        min: 0,
-                                                    },
-                                                }} onChange={(e) => {
-                                                    setFee(e.target.value)
-                                                }} />
-                                                <CreateTournament url={tournamentApiData.url} fee={fee} />
-                                            </Box>
+                                            <CreateTournament url={tournamentApiData.url} fee={fee} setFee={setFee} />
                                         </Box> : ""}
                                 </Box>
                                 :
