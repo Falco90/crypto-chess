@@ -34,6 +34,11 @@ export enum Mode {
     View,
     None
 }
+
+export type Player = {
+    username: string,
+    status: string
+}
 type pageProps = {
     open: boolean,
     onClose: () => void,
@@ -58,6 +63,7 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
     const [fetchedTournament, setFetchedTournament] = useState(false);
     const [playerName, setPlayerName] = useState("");
     const [allPaid, setAllPaid]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
+    const [prizeSent, setPrizeSent]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
 
     useEffect(() => {
         if (mode == Mode.View) {
@@ -100,7 +106,7 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
                 organizer: data.creator,
                 status: data.status,
                 type: data.settings.type,
-                players: data.players.map((player: { username: string }) => player.username)
+                players: data.players,
             })
 
             setFetchedTournament(true);
@@ -162,10 +168,10 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
                                                 </List>
                                                 <List>
                                                     <ListSubheader>Players ({tournamentApiData.players.length})</ListSubheader>
-                                                    {tournamentApiData.players.map((player) => {
+                                                    {tournamentApiData.players.map((player: Player) => {
                                                         return (
                                                             <ListItem>
-                                                                <ListItemText>👤 {player}</ListItemText>
+                                                                <ListItemText>👤 {player.username}</ListItemText>
                                                             </ListItem>)
                                                     })}
                                                 </List>
@@ -192,20 +198,19 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
                                         <ListItem>
                                             <ListItemText><strong>Status: </strong> {formatApiData(tournamentApiData.status)}</ListItemText>
                                         </ListItem>
-                                        <PlayerList contractAddress={tournamentContractData.address} apiPlayers={tournamentApiData.players} allPaid={allPaid} setAllPaid={setAllPaid} />
-                                        {tournamentApiData.status == "finished" ?
-                                            <Winner contractAddress={tournamentContractData.address} />
-                                            : ""
-                                        }
+                                        <PlayerList contractAddress={tournamentContractData.address} apiPlayers={tournamentApiData.players} status={tournamentApiData.status} setAllPaid={setAllPaid} />
                                     </List>
                                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                        {tournamentApiData.status == "finished" && allPaid ?
+                                            <Winner contractAddress={tournamentContractData.address} prizeSent={prizeSent} setPrizeSent={setPrizeSent} />
+                                            : ""}
                                         {
                                             !allPaid ?
                                                 <JoinTournamentButton playerName={playerName} setPlayerName={setPlayerName} tournamentContractData={tournamentContractData} />
                                                 :
-                                                <FinishTournamentButton status={tournamentApiData.status} tournamentContractData={tournamentContractData} />
-
-                                        }
+                                                !prizeSent ?
+                                                    <FinishTournamentButton status={tournamentApiData.status} tournamentContractData={tournamentContractData} />
+                                                    : ""}
                                     </Box>
                                 </Box>
                             }

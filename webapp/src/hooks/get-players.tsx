@@ -3,8 +3,9 @@ import implAbi from '../contracts/ChessTournamentImplAbi.json'
 import { Address } from "viem";
 import { List, ListItem, ListItemText, ListSubheader, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect } from "react";
+import {Player} from "../components/Modal";
 
-function PlayerList({ contractAddress, apiPlayers, allPaid, setAllPaid }: { contractAddress: string, apiPlayers: string[], allPaid: boolean, setAllPaid: Dispatch<SetStateAction<boolean>> }) {
+function PlayerList({ contractAddress, apiPlayers, status, setAllPaid }: { contractAddress: string, apiPlayers: Player[], status: string, setAllPaid: Dispatch<SetStateAction<boolean>> }) {
     const { data: playersPaid, isLoading, isError, error } = useReadContract({
         abi: implAbi,
         address: contractAddress as Address,
@@ -23,7 +24,7 @@ function PlayerList({ contractAddress, apiPlayers, allPaid, setAllPaid }: { cont
         }
 
         const allPresent = apiPlayers.every(player =>
-            playersPaid.includes(player)
+            playersPaid.includes(player.username)
         );
         setAllPaid(prev => (prev !== allPresent ? allPresent : prev));
     }, [playersPaid, apiPlayers]);
@@ -40,10 +41,10 @@ function PlayerList({ contractAddress, apiPlayers, allPaid, setAllPaid }: { cont
                 </TableRow>
             </TableHead>
             <TableBody>
-                {apiPlayers.map((player, index) => (
+                {apiPlayers.map((player: Player, index) => (
                     <TableRow key={index}>
-                        <TableCell>👤 {player}</TableCell>
-                        <TableCell>{playersPaid.includes(player) ? "✅" : ""}</TableCell>
+                        <TableCell>👤 {player.username} {status == "finished" && player.status == "active"  ? " 🏆" : ""}</TableCell>
+                        <TableCell>{playersPaid.includes(player.username) ? "✅" : ""}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>

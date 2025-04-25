@@ -85,7 +85,7 @@ async function getDataAndProof(url: string) {
     return data;
 }
 
-function FinishTournamentButton({ tournamentContractData, status}: { tournamentContractData: { address: string, url: string, fee: bigint }, status: string }) {
+function FinishTournamentButton({ tournamentContractData, status }: { tournamentContractData: { address: string, url: string, fee: bigint }, status: string }) {
     const [isGettingProof, setIsGettingProof] = useState(false);
 
     const {
@@ -100,28 +100,28 @@ function FinishTournamentButton({ tournamentContractData, status}: { tournamentC
     return (
         <Box>
             {isGettingProof || isPending || isConfirming ?
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <CircularProgress size={40} color='secondary' />
-                    <Typography>{isGettingProof ? "Getting Proof" : isPending ? "Pending transaction in your wallet" : isConfirming ? "Confirming Transaction" : ""}</Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                    <CircularProgress size={30} color='secondary' />
+                    <Typography>{isGettingProof ? "Verifying Tournament Results (this may take a while)..." : isPending ? "Pending transaction in your wallet" : isConfirming ? "Confirming Transaction" : ""}</Typography>
                 </Box>
-                : ""}
-            {!isConfirmed ?
-                <Button variant="outlined" disabled={status !== "finished" || isPending || isConfirming || isGettingProof} onClick={() => {
-                    setIsGettingProof(true);
-                    getDataAndProof(tournamentContractData.url).then((proof) => {
-                        setIsGettingProof(false);
-                        finishTournament({ contractAddress: tournamentContractData.address as `0x${string}`, proof});
-                    })
-                }}>{isPending ? "Pending" : isConfirming ? "Confirming" : "Give Prize"}</Button>
                 :
-                <Box sx={{ backgroundColor: 'grey.100', padding: '1rem' }}>
-                    {!error ?
-                        <Box>
-                            <Typography sx={{ textAlign: 'center', marginBottom: '10px' }}>✅ Transaction Succesful!</Typography>
-                            <Typography sx={{ color: 'blue', textAlign: 'center' }}><a href={`https://coston2-explorer.flare.network/tx/${hash}`}>View In Explorer</a></Typography>
-                        </Box>
-                        : <Typography>❌ {error.message}</Typography>}
-                </Box>}
+                !isConfirmed ?
+                    <Button variant="outlined" disabled={status !== "finished" || isPending || isConfirming || isGettingProof} onClick={() => {
+                        setIsGettingProof(true);
+                        getDataAndProof(tournamentContractData.url).then((proof) => {
+                            setIsGettingProof(false);
+                            finishTournament({ contractAddress: tournamentContractData.address as `0x${string}`, proof });
+                        })
+                    }}>Give Prize</Button>
+                    :
+                    <Box sx={{ padding: '1rem' }}>
+                        {!error ?
+                            <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
+                                <Typography sx={{ textAlign: 'center', marginBottom: '10px' }}>✅ Prize Sent Succesfully!</Typography>
+                                <Typography sx={{ color: 'blue', textAlign: 'center' }}><a href={`https://coston2-explorer.flare.network/tx/${hash}`}>View In Explorer</a></Typography>
+                            </Box>
+                            : <Typography>❌ {error.message}</Typography>}
+                    </Box>}
         </Box>
     );
 }
