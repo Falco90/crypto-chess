@@ -8,7 +8,7 @@ CryptoChess is a dApp on the Flare network that allows players to compete for cr
 
 
 <div align="center">
-<img src="images/contract-diagram-2.png" alt="Contract Diagram" width="400"/>
+<img src="images/contract-diagram.png" alt="Contract Diagram" width="400"/>
 </div>
 
 
