@@ -112,7 +112,7 @@ function FinishTournamentButton({ tournamentContractData, status }: { tournament
                             setIsGettingProof(false);
                             finishTournament({ contractAddress: tournamentContractData.address as `0x${string}`, proof });
                         })
-                    }}>Give Prize</Button>
+                    }}>{status !== "finished" ? "Tournament In Progress" : "Send Prize"}</Button>
                     :
                     <Box sx={{ padding: '1rem' }}>
                         {!error ?
