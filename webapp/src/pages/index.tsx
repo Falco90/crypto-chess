@@ -4,7 +4,6 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Header from '../components/Header';
 import { Button, Typography, Container, Box } from '@mui/material';
-import { useRouter } from 'next/router';
 import GetTournaments from "../hooks/get-tournaments";
 import TransitionModal from '../components/Modal';
 import { useState } from 'react';
