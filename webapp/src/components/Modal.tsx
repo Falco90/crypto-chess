@@ -169,9 +169,9 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
                                                 </List>
                                                 <List>
                                                     <ListSubheader>Players ({tournamentApiData.players.length})</ListSubheader>
-                                                    {tournamentApiData.players.map((player: Player) => {
+                                                    {tournamentApiData.players.map((player: Player, index) => {
                                                         return (
-                                                            <ListItem>
+                                                            <ListItem key={index}>
                                                                 <ListItemText>👤 {player.username}</ListItemText>
                                                             </ListItem>)
                                                     })}

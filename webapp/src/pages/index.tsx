@@ -36,7 +36,7 @@ const Home: NextPage = () => {
             <strong>Welcome to CryptoChess!</strong>
           </Typography>
           <Typography variant="body1" component="p" fontSize="16px">
-            CryptoChess allows you to attach crypto prizes to chess tournaments on chess.com. Here's how it works: <br /><br /><strong>♟ Step 1:</strong> Create a chess tournament on chess.com and invite your players. <br /><br /><strong>⛓ Step 2:</strong> Link your tournament to a smart contract by clicking the button below. <br /><br /><strong>💵 Step 3</strong>: Have your players join the smart contract by paying the joining fee. <br /><br /><strong>🏆 Step 4:</strong> Play the tournament on chess.com. <br /><br /><strong>💰	Step 5:</strong> Click the 'give prize' on your CryptoChess tournament page, and the prize money will be transferred to the winner!
+            CryptoChess allows you to attach crypto prizes to chess tournaments on chess.com. Here&apos;s how it works: <br /><br /><strong>♟ Step 1:</strong> Create a chess tournament on chess.com and invite your players. <br /><br /><strong>⛓ Step 2:</strong> Link your tournament to a smart contract by clicking the button below. <br /><br /><strong>💵 Step 3</strong>: Have your players join the smart contract by paying the joining fee. <br /><br /><strong>🏆 Step 4:</strong> Play the tournament on chess.com. <br /><br /><strong>💰	Step 5:</strong> Click the 'give prize' on your CryptoChess tournament page, and the prize money will be transferred to the winner!
           </Typography>
           <Button variant="outlined" sx={{ marginTop: 'auto' }} onClick={() => {
             setOpen(true);
