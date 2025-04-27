@@ -1,5 +1,5 @@
 # ♟ CryptoChess
-CryptoChess is a dApp on the Flare network that allows players to compete for crypto prizes by linking smart contracts to tournaments on chess.com. It leverages the Flare Data Connector (FDC) to verify data from the chess.com API, such as the players participating in the tournament, the tournament status and the winner of the tournament.
+CryptoChess is a dApp on the Flare network that allows players to compete for crypto prizes by linking smart contracts to tournaments on <a href="https://chess.com" target="_blank">chess.com</a>. It leverages the Flare Data Connector (<a href="https://dev.flare.network/fdc/overview">FDC</a>) to verify data from the chess.com API, such as the players participating in the tournament, the tournament status and the winner of the tournament.
 
 ## How It Works
 1. The tournament organizer creates a tournament on chess.com and invites players to join.
@@ -27,10 +27,11 @@ CryptoChess is a dApp on the Flare network that allows players to compete for cr
 </div>
 
 ## How To Run
-This project consists of 3 subfolders: webapp, server and contracts. Run the server first, then the webapp. You won't need to go into contracts, unless you want to deploy your own modified versions of the ChessTournament smart contract.
+This project consists of 3 parts: webapp, server and contracts. Run the server first, then the webapp. You won't need to go into contracts, unless you want to deploy your own modified versions of the ChessTournament smart contracts.
 
 ### Prerequisites
-This project runs with `Node.js` and Typescript.
+This project requires <a href="https://nodejs.org" target="_blank">Node.js</a> 18.17.0 or newer.
+
 ### Server
 Go into the server folder:
 ```
