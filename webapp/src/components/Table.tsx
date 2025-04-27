@@ -66,6 +66,7 @@ export default function TournamentTable({ rows, onOpen, setMode, setTournamentCo
                                 {column.label}
                             </TableCell>
                         ))}
+                        <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
