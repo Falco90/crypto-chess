@@ -47,7 +47,7 @@ Don't forget to add your `PRIVATE_KEY`.<br>
 Then install dependencies and run the server:
 ```
 npm install
-npx ts-node index.ts
+npx run start
 ```
 ### WebApp
 Go into the webapp folder:
