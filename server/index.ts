@@ -36,7 +36,6 @@ app.post('/api/add-player', async (req, res) => {
 
     // Submit attestation
     const roundId = await submitAttestationRequest(abiEncodedRequest);
-    console.log("roundID: ", roundId);
 
     // Retrieve proof and data from DA layer
     const dataAndProof = await retrieveDataAndProof(abiEncodedRequest, roundId);

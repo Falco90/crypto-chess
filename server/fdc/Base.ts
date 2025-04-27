@@ -7,7 +7,6 @@ import IRelayArtifact from "../artifacts/IRelay.json";
 import dotenv from 'dotenv';
 dotenv.config();
 
-console.log(process.env.PRIVATE_KEY!);
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 const helpersAddress = process.env.HELPERS_CONTRACT_ADDRESS!;
