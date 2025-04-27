@@ -26,39 +26,46 @@ app.post('/api/add-player', async (req, res) => {
     const { url } = req.body;
 
     const postprocessJq = `{url : .url, players : [.players[].username]}`;
+
     const abiSignature = `{\"components\": [{\"internalType\": \"string\", \"name\": \"url\", \"type\": \"string\"},{\"internalType\": \"string[]\", \"name\": \"players\", \"type\": \"string[]\"}],\"name\": \"task\",\"type\": \"tuple\"}`;
 
-    //prepare attestation
+    // Prepare attestation
     const data = await prepareAttestationRequest(url, postprocessJq, abiSignature);
 
     const abiEncodedRequest = data.abiEncodedRequest;
 
-    //submit attestation
+    // Submit attestation
     const roundId = await submitAttestationRequest(abiEncodedRequest);
     console.log("roundID: ", roundId);
 
-    //retrieve proof and data and send to frontend
+    // Retrieve proof and data from DA layer
     const dataAndProof = await retrieveDataAndProof(abiEncodedRequest, roundId);
+
+    // Send to frontend
     res.json(dataAndProof);
 }
 );
 
 app.post('/api/finish-tournament', async (req, res) => {
     const { url } = req.body;
+
     const postprocessJq = `{url : .url, status: .status, winner : [.players[] | select(.status == "active")][0].username}`;
+
     const abiSignature = `{\"components\": [{\"internalType\": \"string\", \"name\": \"url\", \"type\": \"string\"},{\"internalType\": \"string\", \"name\": \"status\", \"type\": \"string\"}, {\"internalType\": \"string\", \"name\": \"winner\", \"type\": \"string\"} ],\"name\": \"task\",\"type\": \"tuple\"}`;
 
-    //prepare attestation
+    // Prepare attestation
     const data = await prepareAttestationRequest(url, postprocessJq, abiSignature);
 
     const abiEncodedRequest = data.abiEncodedRequest;
 
-    //submit attestation
+    // Submit attestation
     const roundId = await submitAttestationRequest(abiEncodedRequest);
     console.log("roundID: ", roundId);
 
-    //retrieve proof and data and send to frontend
+    // Retrieve proof and data from DA layer
     const dataAndProof = await retrieveDataAndProof(abiEncodedRequest, roundId);
+
+    // Send to frontend
     res.json(dataAndProof);
 })
 
@@ -94,6 +101,6 @@ async function retrieveDataAndProof(
     roundId: number
 ) {
     const url = `${COSTON2_DA_LAYER_URL}api/v1/fdc/proof-by-request-round-raw`;
-    console.log("Url:", url, "\n");
+
     return await retrieveDataAndProofBase(url, abiEncodedRequest, roundId);
 }

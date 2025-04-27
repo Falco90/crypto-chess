@@ -83,8 +83,6 @@ async function prepareAttestationRequestBase(
     body: JSON.stringify(request),
   });
 
-  console.log("base response: ", response);
-
   if (response.status !== 200) {
     throw new Error(`Response status is not OK, status ${response.status} ${response.statusText}`);
   }
@@ -93,7 +91,6 @@ async function prepareAttestationRequestBase(
 }
 
 async function calculateRoundId(transaction: ethers.ContractTransactionResponse) {
-  // Wait for the transaction to be mined
   const receipt = await provider.waitForTransaction(transaction.hash);
 
   if (!receipt?.blockNumber) {

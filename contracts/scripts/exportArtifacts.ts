@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+// This script exports the contract artifacts to the backend server
+
 type ContractPath = {
     source: string;
     target?: string;
