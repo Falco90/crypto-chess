@@ -120,15 +120,15 @@ function JoinTournamentButton({ playerName, setPlayerName, tournamentContractDat
                             setIsGettingProof(true);
                             getDataAndProof(tournamentContractData.url).then((proof) => {
                                 setIsGettingProof(false);
-                                addPlayer({ contractAddress: tournamentContractData.address as `0x${string}`, playerName, proof, fee: tournamentContractData.fee });
+                                addPlayer({ contractAddress: tournamentContractData.address as `0x${string}`, playerName: playerName.toLowerCase(), proof, fee: tournamentContractData.fee });
                             })
                         }}>Pay Fee</Button>
                     </Box>
                     :
                     <Box sx={{ padding: '1rem' }}>
                         {!error ?
-                            <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
-                                <Typography sx={{ textAlign: 'center', marginBottom: '10px'}}>✅ Transaction Succesful!</Typography>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+                                <Typography sx={{ textAlign: 'center', marginBottom: '10px' }}>✅ Transaction Succesful!</Typography>
                                 <Typography sx={{ color: 'blue', textAlign: 'center' }}><a href={`https://coston2-explorer.flare.network/tx/${hash}`}>View In Explorer</a></Typography>
                             </Box>
                             : <Typography>❌ {error.message}</Typography>}
