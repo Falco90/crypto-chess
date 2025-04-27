@@ -28,6 +28,9 @@ CryptoChess is a dApp on the Flare network that allows players to compete for cr
 
 ## How To Run
 This project consists of 3 subfolders: webapp, server and contracts. Run the server first, then the webapp. You won't need to go into contracts, unless you want to deploy your own modified versions of the ChessTournament smart contract.
+
+### Prerequisites
+This project runs with `Node.js` and Typescript.
 ### Server
 Go into the server folder:
 ```
