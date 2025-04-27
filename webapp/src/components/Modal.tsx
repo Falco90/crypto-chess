@@ -209,7 +209,7 @@ export default function TransitionsModal({ open, onClose, mode, setMode, tournam
                                             !allPaid && tournamentApiData.status !== "finished" ?
                                                 <JoinTournamentButton playerName={playerName} setPlayerName={setPlayerName} tournamentContractData={tournamentContractData} />
                                                 :
-                                                !prizeSent && allPaid && tournamentApiData.status == "finished" ?
+                                                !prizeSent && allPaid ?
                                                     <FinishTournamentButton status={tournamentApiData.status} tournamentContractData={tournamentContractData} />
                                                     : ""}
                                     </Box>
