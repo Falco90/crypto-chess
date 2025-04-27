@@ -1,6 +1,8 @@
 # ♟ CryptoChess
 CryptoChess is a dApp on the Flare network that allows players to compete for crypto prizes by linking smart contracts to tournaments on <a href="https://chess.com" target="_blank">chess.com</a>. It leverages the Flare Data Connector (<a href="https://dev.flare.network/fdc/overview" target="_blank">FDC</a>) to verify data from the chess.com API, such as the players participating in the tournament, the tournament status and the winner of the tournament.
 
+The current development build is live at <a href="https://crypto-chess-flare.vercel.app">crypto-chess-flare.vercel.app</a>.
+
 You can see a demonstration video of the dApp <a href="https://youtu.be/hzl9kupwtN8" target="_blank">here</a>.
 
 ## How It Works
