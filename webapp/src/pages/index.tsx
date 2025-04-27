@@ -50,9 +50,7 @@ const Home: NextPage = () => {
         </Box>
       </Box>
       <footer className={styles.footer}>
-        <a href="https://rainbow.me" rel="noopener noreferrer" target="_blank">
-          Made by Falco90 during Flare x Encode April 2025
-        </a>
+        Made by Falco90 during Flare x Encode April 2025
       </footer>
     </Container>
   );
