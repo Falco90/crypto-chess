@@ -45,7 +45,6 @@ app.post('/api/add-player', async (req, res) => {
 
 app.post('/api/finish-tournament', async (req, res) => {
     const { url } = req.body;
-    console.log("FINISH TOURNAMENT", req.body);
     const postprocessJq = `{url : .url, status: .status, winner : [.players[] | select(.status == "active")][0].username}`;
     const abiSignature = `{\"components\": [{\"internalType\": \"string\", \"name\": \"url\", \"type\": \"string\"},{\"internalType\": \"string\", \"name\": \"status\", \"type\": \"string\"}, {\"internalType\": \"string\", \"name\": \"winner\", \"type\": \"string\"} ],\"name\": \"task\",\"type\": \"tuple\"}`;
 
