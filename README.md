@@ -6,7 +6,7 @@ You can see a demonstration video of the dApp <a href="https://youtu.be/hzl9kupw
 ## How It Works
 1. The tournament organizer creates a tournament on chess.com and invites players to join.
 
-2. From the CryptoChess frontend the tournament organizer deploys a smart contract with the chess.com url of the tournament and a chosen participation fee as arguments. The frontend calls the createTournament function on the ChessTournament factory contract which deploys a clone of the ChessTournament implementation contract, with the arguments provided by the tournament organizer. See the diagram below:
+2. From the CryptoChess frontend the tournament organizer deploys a smart contract with the chess.com url of the tournament and a chosen participation fee as arguments. The frontend calls the createTournament function on the ChessTournament factory <a href="https://coston2-explorer.flare.network/address/0xE67D4c2E880D6D21659EB58A357f47AF4de1a61c" target="_blank">contract</a> which deploys a clone of the ChessTournament implementation <a href="https://coston2-explorer.flare.network/address/0x35Ebf3282D11e325f9DD307c177e9b6a5CA25864" target="_blank">contract</a>, with the arguments provided by the tournament organizer. See the diagram below:
 
 
 <div align="center">
