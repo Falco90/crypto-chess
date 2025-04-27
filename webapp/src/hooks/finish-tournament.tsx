@@ -4,7 +4,7 @@ import {
 } from 'wagmi';
 import implAbi from '../contracts/ChessTournamentImplAbi.json';
 import JsonApiVerificationJson from '../contracts/utils/IJsonApiVerification.json';
-import { decodeAbiParameters, parseEther } from 'viem';
+import { decodeAbiParameters } from 'viem';
 import { Box, Button, Typography, CircularProgress } from '@mui/material';
 import { useState } from 'react';
 
@@ -116,7 +116,7 @@ function FinishTournamentButton({ tournamentContractData, status }: { tournament
                     :
                     <Box sx={{ padding: '1rem' }}>
                         {!error ?
-                            <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px'}}>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
                                 <Typography sx={{ textAlign: 'center', marginBottom: '10px' }}>✅ Prize Sent Succesfully!</Typography>
                                 <Typography sx={{ color: 'blue', textAlign: 'center' }}><a href={`https://coston2-explorer.flare.network/tx/${hash}`}>View In Explorer</a></Typography>
                             </Box>

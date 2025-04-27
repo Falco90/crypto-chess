@@ -1,9 +1,9 @@
 import { useReadContract } from "wagmi";
 import implAbi from '../contracts/ChessTournamentImplAbi.json'
 import { Address } from "viem";
-import { List, ListItem, ListItemText, ListSubheader, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import {Player} from "../components/Modal";
+import { Player } from "../components/Modal";
 
 function PlayerList({ contractAddress, apiPlayers, status, setAllPaid }: { contractAddress: string, apiPlayers: Player[], status: string, setAllPaid: Dispatch<SetStateAction<boolean>> }) {
     const { data: playersPaid, isLoading, isError, error } = useReadContract({
@@ -43,7 +43,7 @@ function PlayerList({ contractAddress, apiPlayers, status, setAllPaid }: { contr
             <TableBody>
                 {apiPlayers.map((player: Player, index) => (
                     <TableRow key={index}>
-                        <TableCell>👤 {player.username} {status == "finished" && player.status == "active"  ? " 🏆" : ""}</TableCell>
+                        <TableCell>👤 {player.username} {status == "finished" && player.status == "active" ? " 🏆" : ""}</TableCell>
                         <TableCell>{playersPaid.includes(player.username) ? "✅" : ""}</TableCell>
                     </TableRow>
                 ))}

@@ -1,7 +1,7 @@
 import { useReadContract, useReadContracts } from "wagmi";
 import implAbi from '../contracts/ChessTournamentImplAbi.json'
 import { Address } from "viem";
-import { List, ListItem, ListItemText, ListSubheader, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { ListItem, ListItemText } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
 import { truncateAddress } from "../utils/utils";
 
@@ -15,8 +15,6 @@ function Winner({ contractAddress, prizeSent, setPrizeSent }: { contractAddress:
     }
 
     setPrizeSent(prizeData);
-
-
 
     const { data: winnerData, isLoading: isLoadingWinner, isError: isErrorWinner } = useReadContracts({
         contracts: [

@@ -18,10 +18,6 @@ const Home: NextPage = () => {
     url: "",
     fee: BigInt("")
   })
-  const [contractAddress, setContractAddress] = useState("");
-  const [url, setUrl] = useState("");
-  const [fee, setFee] = useState("");
-  const router = useRouter();
 
   return (
     <Container sx={{ minHeight: '100vh', width: '100%' }}>

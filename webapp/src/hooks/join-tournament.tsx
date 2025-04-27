@@ -4,7 +4,7 @@ import {
 } from 'wagmi';
 import implAbi from '../contracts/ChessTournamentImplAbi.json';
 import JsonApiVerificationJson from '../contracts/utils/IJsonApiVerification.json';
-import { decodeAbiParameters, parseEther } from 'viem';
+import { decodeAbiParameters } from 'viem';
 import { Box, Button, Typography, CircularProgress, TextField } from '@mui/material';
 import { useState } from 'react';
 

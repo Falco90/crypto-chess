@@ -22,7 +22,7 @@ function CreateTournament({ url, fee, setFee }: pageProps) {
     <Box sx={{ marginTop: 'auto', padding: '1rem' }}>
       {
         isPending || isConfirming ?
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px'}}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
             <CircularProgress size={30} color='secondary' />
             <Typography>{isPending ? "Pending Wallet Transaction..." : isConfirming ? "Confirming Transaction..." : ""}</Typography>
           </Box>
