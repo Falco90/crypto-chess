@@ -12,7 +12,7 @@ import { toChessApiUrl, extractTournamentSlug, formatApiData, formatTournamentNa
 import JoinTournamentButton from '../hooks/join-tournament';
 import FinishTournamentButton from '../hooks/finish-tournament';
 import PlayerList from '../hooks/get-players';
-import { Address, formatEther } from 'viem';
+import { formatEther } from 'viem';
 import Winner from '../hooks/get-winner';
 
 const style = {
@@ -39,6 +39,7 @@ export type Player = {
     username: string,
     status: string
 }
+
 type pageProps = {
     open: boolean,
     onClose: () => void,
