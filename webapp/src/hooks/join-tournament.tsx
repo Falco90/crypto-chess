@@ -77,7 +77,7 @@ export function useAddPlayer() {
 }
 
 async function getDataAndProof(url: string) {
-    const response = await fetch("http://localhost:3000/api/add-player", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/add-player`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

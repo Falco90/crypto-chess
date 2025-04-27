@@ -71,7 +71,7 @@ export function useFinishTournament() {
 }
 
 async function getDataAndProof(url: string) {
-    const response = await fetch("http://localhost:3000/api/finish-tournament", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/finish-tournament`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
