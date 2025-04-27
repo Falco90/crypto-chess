@@ -1,7 +1,7 @@
-# CryptoChess
+# ♟ CryptoChess
 CryptoChess is a dApp on the Flare network that allows players to compete for crypto prizes by linking smart contracts to tournaments on chess.com. It leverages the Flare Data Connector (FDC) to verify data from the chess.com API, such as the players participating in the tournament, the tournament status and the winner of the tournament.
 
-## Flow
+## How It Works
 1. The tournament organizer creates a tournament on chess.com and invites players to join.
 
 2. From the CryptoChess frontend the tournament organizer deploys a smart contract with the chess.com url of the tournament and a chosen participation fee as arguments. The frontend calls the createTournament function on the ChessTournament factory contract which deploys a clone of the ChessTournament implementation contract, with the arguments provided by the tournament organizer. See the diagram below:
@@ -25,3 +25,35 @@ CryptoChess is a dApp on the Flare network that allows players to compete for cr
 <div align="center">
 <img src="images/send-prize-flow.png" alt="Add player Flow" width="700"/>
 </div>
+
+## How To Run
+This project consists of 3 subfolders: webapp, server and contracts. Run the server first, then the webapp. You won't need to go into contracts, unless you want to modify the ChessTournament contract logic.
+### Server
+Go into the server folder:
+```
+cd server
+```
+Copy the `.env.example` file into your local `.env` file. 
+```
+cp .env.example .env
+```
+Don't forget to add your `PRIVATE_KEY`.<br>
+Then install dependencies and run the server:
+```
+npm install
+npx ts-node index.ts
+```
+### WebApp
+```
+cd webapp
+```
+Copy the `.env.example` file into your local `.env` file.
+```
+cp .env.example .env
+```
+Don't forget to add your API keys for `FLARE_API_KEY_TESTNET` `JQ_VERIFIER_API_KEY_TESTNET`.<br> 
+Then install dependencies and run the webapp:
+```
+npm install
+npm run dev
+```
