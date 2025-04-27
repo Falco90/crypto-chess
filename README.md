@@ -30,6 +30,8 @@ You can see a demonstration video of the dApp <a href="https://youtu.be/hzl9kupw
 <img src="images/send-prize-flow.png" alt="Add player Flow" width="700"/>
 </div>
 
+*Please note that the chess.com API can take up to 12 hours to update all it's data. Which can result in the tournament being finished, but the 'Send Prize' button not being available yet. 
+
 ## How To Run
 This project consists of 3 parts: webapp, server and contracts. Run the server first, then the webapp. You won't need to go into contracts, unless you want to deploy your own modified versions of the ChessTournament smart contracts.
 
